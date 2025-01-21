@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "~stream-chat-react/dist/css/v2/index.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+
+	/* Fonts */
+	--heading: "Figtree", sans-serif;
+	--body: "Inter", sans-serif;
+	--geist: "Geist", sans-serif;
+
+	/* Colors */
+	--neutral-0: #ffffff;
+	--neutral-100: #f6f8fa;
+	--neutral-200: #e2e4e9;
+	--neutral-300: #cdd0d5;
+	--neutral-400: #868c98;
+	--neutral-500: #525866;
+	--neutral-600: #3c4353;
+	--neutral-700: #20232d;
+	--neutral-800: #14161a;
+	--neutral-900: #0a0d14;
+	--primary-50: #f1ecf9;
+	--primary-100: #e9e4f7;
+	--primary-200: #d3c4ec;
+	--primary-300: #6f42c1;
+	--primary-400: #643bae;
+	--primary-500: #5a359a;
+	--primary-600: #533291;
+	--primary-700: #432874;
+	--primary-800: #321e57;
+	--primary-900: #281745;
+	--secondary-50: #fef3eb;
+	--secondary-100: #feede2;
+	--secondary-200: #fcd7c1;
+	--secondary-300: #f67f36;
+	--secondary-400: #de7231;
+	--secondary-500: #c5672b;
+	--secondary-600: #b95f29;
+	--secondary-700: #944d1f;
+	--secondary-800: #6f3a17;
+	--secondary-900: #562c12;
+	--foreground: transparent;
+	--background: transparent;
+}
+
+/* Removes scrollbar on Chrome */
+::-webkit-scrollbar {
+	width: 0;
+}
+
+/* Removes scrollbar on IE */
+::-ms-scrollbar {
+	display: none;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: var(--geist);
+	/* Removes scrollbar on Firefox */
+	scrollbar-width: none;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background: #f2edf7;
+	color: var(--neutral-900);
+	overflow-x: hidden;
+	/* user-select: none; */
+	width: 100%;
+	transition: colors 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
+	-webkit-transition: colors 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
+	-moz-transition: colors 0.75s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+img {
+	image-rendering: crisp-edges -moz-crisp-edges;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--geist);
+	text-wrap: pretty;
+}
+
+a,
+p,
+button,
+label,
+span {
+	font-family: var(--geist);
+}
+
+button,
+input {
+	outline: none;
+}
+
+/* Override WebKit autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+	-webkit-text-fill-color: hsl(var(--foreground));
+	-webkit-box-shadow: 0 0 0px 1000px hsl(var(--background)) inset;
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Override Mozilla Firefox autofill styles */
+input:autofill {
+	background-color: hsl(var(--background)) !important;
+	color: hsl(var(--foreground)) !important;
+}
+
+/* Removes arrows from input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	appearance: none;
+	margin: 0;
+}
+
+/* Removes close icon from input type search */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+/* link animation */
+.link {
+	width: fit-content;
+	position: relative;
+}
+
+.link::before {
+	content: "";
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 0;
+	height: 2px;
+	background: var(--neutral-500);
+	transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+	-moz-transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+	-webkit-transition: width 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.link:hover::before {
+		left: 0;
+		right: auto;
+		width: 100%;
+	}
+}
+
+/* modals */
+.modal-primary {
+	background: linear-gradient(180deg, rgba(111, 66, 193, 0.098) 2.11%, rgba(111, 66, 193, 0) 48.08%),
+		white;
+}
+.modal-secondary {
+	background: linear-gradient(360deg, rgba(111, 66, 193, 0) 47.43%, rgba(246, 127, 54, 0.12) 100%),
+		white;
+}
+.modal-destructive {
+	background: linear-gradient(180deg, rgba(223, 28, 65, 0.092) 2.11%, rgba(223, 28, 65, 0) 21.34%),
+		white;
+}
+.modal-success {
+	background: linear-gradient(180deg, rgba(49, 159, 67, 0.098) 2.11%, rgba(49, 159, 67, 0) 48.08%),
+		white;
+}
+@layer base {
+	:root {
+		--radius: 0.5rem;
+	}
+}
