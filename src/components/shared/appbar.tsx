@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 import type { NotificationProps } from "@/types";
+import { Notifications } from "./notifications";
 import { UserSettings } from "./user-settings";
 import { Backdrop } from "./backdrop";
 import { getInitials } from "@/lib";
@@ -10,7 +11,10 @@ import { getInitials } from "@/lib";
 const notifications: NotificationProps[] = [];
 
 export const Appbar = () => {
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState({
+		settings: false,
+		notifications: false,
+	});
 
 	return (
 		<>
@@ -20,14 +24,18 @@ export const Appbar = () => {
 						<Image src="/assets/images/classore.png" alt="classore" fill sizes="100%" />
 					</div>
 					<div className="flex items-center gap-x-4">
-						<button className="relative grid size-10 place-items-center rounded-full border">
+						<button
+							onClick={() => setOpen({ ...open, notifications: true })}
+							className="relative grid size-10 place-items-center rounded-full border">
 							{notifications.length > 0 && (
 								<div className="absolute right-0.5 top-0.5 size-1.5 rounded-full bg-red-500"></div>
 							)}
 							<RiNotification4Line />
 						</button>
 						<div className="h-7 w-[1px] bg-neutral-300"></div>
-						<button onClick={() => setOpen(!open)} className="flex items-center gap-x-2">
+						<button
+							onClick={() => setOpen({ ...open, settings: true })}
+							className="flex items-center gap-x-2">
 							<div className="grid size-10 place-items-center rounded-full border bg-black text-white">
 								{getInitials("Samson Okunola")}
 							</div>
@@ -42,8 +50,13 @@ export const Appbar = () => {
 					</div>
 				</nav>
 			</header>
-			<Backdrop onClose={(open) => setOpen(open)} open={open}>
-				<UserSettings setOpen={setOpen} />
+			<Backdrop onClose={(settings) => setOpen({ ...open, settings })} open={open.settings}>
+				<UserSettings setOpen={(settings) => setOpen({ ...open, settings })} />
+			</Backdrop>
+			<Backdrop
+				onClose={(notifications) => setOpen({ ...open, notifications })}
+				open={open.notifications}>
+				<Notifications setOpen={(notifications) => setOpen({ ...open, notifications })} />
 			</Backdrop>
 		</>
 	);

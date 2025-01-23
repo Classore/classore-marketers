@@ -56,7 +56,7 @@ export const Backdrop = ({
 		<div
 			role="dialog"
 			aria-modal="true"
-			onClick={() => onClose(false)}
+			onClick={() => onClose(true)}
 			className={cn(
 				"fixed inset-0 z-40",
 				"transition-opacity duration-200 ease-in-out",
