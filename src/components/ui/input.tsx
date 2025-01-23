@@ -1,4 +1,4 @@
-import { Eye, EyeSlash } from "iconsax-react";
+import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -36,10 +36,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 					{type === "password" ? (
 						<button
 							type="button"
-							className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-300"
+							className="absolute right-4 top-1/2 size-5 -translate-y-1/2 text-black"
 							onClick={() => setTogglePassword(!togglePassword)}>
-							{!togglePassword ? <Eye /> : <EyeSlash />}
-
+							{!togglePassword ? <Eye className="size-4" /> : <EyeOff className="size-4" />}
 							<span className="sr-only">
 								{togglePassword ? "show password" : "hide password"}
 							</span>
