@@ -9,19 +9,19 @@ export const getWithdrawals = async (params?: PaginationProps & {}) => {
 	}
 	return axios
 		.get<
-			HttpResponse<PaginatedResponse<any>>
+			HttpResponse<PaginatedResponse<string>>
 		>(endpoints.withdrawals["read-all"], { params })
 		.then((res) => res.data);
 };
 
 export const createWithdrawal = async (data: CreateWithdrawlDto) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.withdrawals["create"], data)
+		.post<HttpResponse<string>>(endpoints.withdrawals["create"], data)
 		.then((res) => res.data);
 };
 
-export const verifyWithdrawal = async (data: any) => {
+export const verifyWithdrawal = async (data: string) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.withdrawals["verify"], data)
+		.post<HttpResponse<string>>(endpoints.withdrawals["verify"], data)
 		.then((res) => res.data);
 };

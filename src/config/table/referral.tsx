@@ -1,5 +1,4 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import type { ReferralProps } from "@/types";
@@ -29,10 +28,8 @@ export const referral_columns: ColumnDef<ReferralProps>[] = [
 	{
 		accessorKey: "actions",
 		cell: ({}) => {
-			const [open, setOpen] = React.useState(false);
-
 			return (
-				<Dialog open={open} onOpenChange={setOpen}>
+				<Dialog>
 					<DialogTrigger></DialogTrigger>
 					<DialogContent></DialogContent>
 				</Dialog>

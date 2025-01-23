@@ -6,6 +6,8 @@ export const getReferrals = async (params?: PaginationProps & {}) => {
 	if (params) {
 	}
 	return axios
-		.get<HttpResponse<PaginatedResponse<any>>>(endpoints.referrals["read-all"], { params })
+		.get<
+			HttpResponse<PaginatedResponse<string>>
+		>(endpoints.referrals["read-all"], { params })
 		.then((res) => res.data);
 };

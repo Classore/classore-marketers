@@ -15,24 +15,24 @@ interface CreatePasswordDto {
 
 export const signin = async (data: SigninDto) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.auth["signin"], data)
+		.post<HttpResponse<string>>(endpoints.auth["signin"], data)
 		.then((res) => res.data);
 };
 
 export const createPassword = async (data: CreatePasswordDto) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.auth["create-password"], data)
+		.post<HttpResponse<string>>(endpoints.auth["create-password"], data)
 		.then((res) => res.data);
 };
 
 export const forgotPassword = async (data: { email: string }) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.auth["forgot-password"], data)
+		.post<HttpResponse<string>>(endpoints.auth["forgot-password"], data)
 		.then((res) => res.data);
 };
 
 export const resetPassword = async (data: CreatePasswordDto) => {
 	return axios
-		.post<HttpResponse<any>>(endpoints.auth["reset-password"], data)
+		.post<HttpResponse<string>>(endpoints.auth["reset-password"], data)
 		.then((res) => res.data);
 };

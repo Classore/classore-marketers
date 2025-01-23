@@ -1,5 +1,4 @@
 import type { ColumnDef } from "@tanstack/react-table";
-import React from "react";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -29,10 +28,8 @@ export const withdrawal_columns: ColumnDef<WithdrawalProps>[] = [
 	{
 		accessorKey: "actions",
 		cell: ({}) => {
-			const [open, setOpen] = React.useState(false);
-
 			return (
-				<Dialog open={open} onOpenChange={setOpen}>
+				<Dialog>
 					<DialogTrigger></DialogTrigger>
 					<DialogContent></DialogContent>
 				</Dialog>
