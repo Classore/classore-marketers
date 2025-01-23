@@ -32,7 +32,9 @@ export const httpErrorhandler = (error: HttpError) => {
 	};
 };
 
-export const executeWithErrorHandling = async <T>(operation: () => Promise<T>): Promise<T> => {
+export const executeWithErrorHandling = async <T>(
+	operation: () => Promise<T>
+): Promise<T> => {
 	try {
 		return await operation();
 	} catch (error) {
@@ -54,7 +56,9 @@ export const IsHttpError = (error: any): error is HttpError => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createFormDataFromObject = <T extends Record<string, any>>(payload: T): FormData => {
+export const createFormDataFromObject = <T extends Record<string, any>>(
+	payload: T
+): FormData => {
 	const formData = new FormData();
 
 	if (!payload) {

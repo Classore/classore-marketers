@@ -82,7 +82,10 @@ export const OtpInput = ({ onChange, value, length = 6 }: Props) => {
 };
 
 const MemoizedInput = React.memo(
-	({ value, ...props }: { value: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
+	({
+		value,
+		...props
+	}: { value: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
 		<input {...props} value={value} />
 	)
 );

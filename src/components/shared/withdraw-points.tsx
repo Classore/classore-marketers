@@ -140,7 +140,11 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 					/>
 				)}
 				{screen === "summary" && (
-					<SummaryScreen handleBack={handleBack} handleNext={handleNext} withdrawal={withdrawal} />
+					<SummaryScreen
+						handleBack={handleBack}
+						handleNext={handleNext}
+						withdrawal={withdrawal}
+					/>
 				)}
 				{screen === "verification" && (
 					<VerificationScreen
@@ -185,7 +189,9 @@ const InitialScreen = ({
 					<label htmlFor="amount" className="text-sm text-neutral-400">
 						Enter Amount
 					</label>
-					<p className="text-sm text-neutral-400">Point Bal. ({pointBalance.toLocaleString()})</p>
+					<p className="text-sm text-neutral-400">
+						Point Bal. ({pointBalance.toLocaleString()})
+					</p>
 				</div>
 				<div>
 					<Input
@@ -250,7 +256,7 @@ const SummaryScreen = ({
 				</div>
 				<div className="flex items-center justify-between">
 					<p className="text-xs text-neutral-400">Amount(Naira)</p>
-					<p className="text-xs font-medium">{withdrawal.amount}</p>
+					<p className="text-xs font-medium">{formatCurrency(withdrawal.amount)}</p>
 				</div>
 				<div className="flex items-center justify-between">
 					<p className="text-xs text-neutral-400">Recipient&apos;s Bank</p>
@@ -317,7 +323,10 @@ const VerificationScreen = ({
 			</Button>
 			<div className="flex items-center justify-center gap-x-1">
 				<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
-				<button onClick={handleResend} disabled={timer > 0} className="text-xs text-secondary-400">
+				<button
+					onClick={handleResend}
+					disabled={timer > 0}
+					className="text-xs text-secondary-400">
 					Resend
 				</button>
 			</div>

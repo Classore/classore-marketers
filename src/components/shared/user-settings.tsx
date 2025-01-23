@@ -22,7 +22,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 	const [tab, setTab] = React.useState("profile");
 
 	return (
-		<div className="absolute right-4 top-4 h-[calc(100vh-32px)] w-[550px] max-w-full space-y-4 rounded-lg bg-white p-4">
+		<div className="absolute right-4 top-4 h-[calc(100vh-32px)] w-[550px] max-w-full space-y-4 rounded-lg border bg-white p-4 shadow-2xl">
 			<div className="flex w-full items-center justify-between">
 				<p className="text-lg font-semibold">Account Settings</p>
 				<button onClick={() => setOpen(false)}>
@@ -56,7 +56,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 							</button>
 						))}
 					</div>
-					<div className="w-full border-y">
+					<div className="w-full">
 						<TabPanel selected={tab} value="profile">
 							<UserProfile />
 						</TabPanel>
