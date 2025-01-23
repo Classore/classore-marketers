@@ -253,15 +253,15 @@ const SummaryScreen = ({
 					<p className="text-xs font-medium">{withdrawal.amount}</p>
 				</div>
 				<div className="flex items-center justify-between">
-					<p className="text-xs text-neutral-400">Recipient's Bank</p>
+					<p className="text-xs text-neutral-400">Recipient&apos;s Bank</p>
 					<p className="text-xs font-medium">{withdrawal.recipientBank}</p>
 				</div>
 				<div className="flex items-center justify-between">
-					<p className="text-xs text-neutral-400">Recipient's Account Number</p>
+					<p className="text-xs text-neutral-400">Recipient&apos;s Account Number</p>
 					<p className="text-xs font-medium">{withdrawal.recipientAccountNumber}</p>
 				</div>
 				<div className="flex items-center justify-between">
-					<p className="text-xs text-neutral-400">Recipient's Account Name</p>
+					<p className="text-xs text-neutral-400">Recipient&apos;s Account Name</p>
 					<p className="text-xs font-medium">{withdrawal.recipientAccountName}</p>
 				</div>
 				<div className="flex items-center justify-between">
@@ -316,7 +316,7 @@ const VerificationScreen = ({
 				Verify
 			</Button>
 			<div className="flex items-center justify-center gap-x-1">
-				<p className="text-xs text-neutral-400">Didn't recieve a mail?</p>
+				<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
 				<button onClick={handleResend} disabled={timer > 0} className="text-xs text-secondary-400">
 					Resend
 				</button>

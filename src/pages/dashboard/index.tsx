@@ -101,7 +101,7 @@ const Page = () => {
 				<div className="h-full w-full space-y-3 overflow-y-auto rounded-3xl bg-neutral-100 p-3">
 					<div className="w-full space-y-2 rounded-xl bg-gradient-to-r from-[#feede3]/40 to-[#6f42c1]/15 px-5 py-8">
 						<h1 className="text-2xl font-bold">{greeting()} Samson</h1>
-						<p className="text-sm text-neutral-400">Monitor your ward's progress with Classore</p>
+						<p className="text-sm text-neutral-400">Monitor your ward&apos;s progress with Classore</p>
 					</div>
 					<div className="grid w-full grid-cols-2 gap-x-4">
 						<div className="w-full space-y-3 rounded-2xl bg-white px-5 py-4">

@@ -2,7 +2,9 @@ import React from "react";
 
 import { SVGIcon } from "@/components/shared";
 
-interface Props extends React.SVGProps<SVGSVGElement> {}
+interface Props extends React.SVGProps<SVGSVGElement> {
+	className?: string;
+}
 
 export const Coin = (props: Props) => {
 	return (
