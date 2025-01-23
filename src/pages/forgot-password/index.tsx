@@ -1,5 +1,6 @@
+import { RiArrowLeftSLine, RiLoader2Line } from "@remixicon/react";
 import { useMutation } from "@tanstack/react-query";
-import { RiLoader2Line } from "@remixicon/react";
+import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import { toast } from "sonner";
 import * as Yup from "yup";
@@ -12,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Seo } from "@/components/shared";
 
 const Page = () => {
+	const router = useRouter();
+
 	const { isPending } = useMutation({
 		onSuccess: () => {
 			toast.success("An email sent has been sent to you");
@@ -41,6 +44,9 @@ const Page = () => {
 				<div className="flex max-w-96 flex-col justify-center gap-6 pt-20">
 					<header className="flex flex-col gap-4">
 						<ForgotPasswordGraphic />
+						<Button onClick={() => router.back()} className="w-fit" size="sm" variant="outline">
+							<RiArrowLeftSLine className="size-4" /> Back
+						</Button>
 						<h2 className="font-body text-2xl font-bold text-neutral-900">Forgot Password</h2>
 					</header>
 					<form onSubmit={handleSubmit} className="flex flex-col gap-4 font-body font-normal">

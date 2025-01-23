@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { RiLoader2Line } from "@remixicon/react";
+import { useRouter } from "next/router";
 import { useFormik } from "formik";
 import Link from "next/link";
 import * as Yup from "yup";
@@ -12,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Seo } from "@/components/shared";
 
 const Page = () => {
+	const router = useRouter();
+
 	const { isPending } = useMutation({});
 
 	const { errors, handleChange, handleSubmit, touched } = useFormik({
@@ -33,6 +36,7 @@ const Page = () => {
 		}),
 		onSubmit: (values) => {
 			console.log(values);
+			router.push("/dashboard");
 		},
 	});
 
