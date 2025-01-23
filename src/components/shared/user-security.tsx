@@ -17,7 +17,7 @@ export const UserSecurity = () => {
 	});
 
 	return (
-		<form onSubmit={handleSubmit} className="h-full w-full">
+		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
 			<div className="space-y-5 border-y py-6">
 				<div>
 					<label className="text-xs font-medium" htmlFor="currentPassword">

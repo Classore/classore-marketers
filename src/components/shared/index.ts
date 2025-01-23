@@ -6,6 +6,8 @@ export * from "./icon-label";
 export * from "./icon";
 export * from "./loader";
 export * from "./otp-input";
+export * from "./referral-item";
 export * from "./seo";
 export * from "./tab-panel";
+export * from "./withdrawal-item";
 export * from "./withdraw-points";

@@ -45,7 +45,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 						</div>
 					</div>
 				</div>
-				<div className="w-full space-y-4">
+				<div className="h-[calc(100%-290px)] w-full space-y-4">
 					<div className="flex items-center gap-x-1">
 						{USER_TABS.map(({ icon: Icon, label, value }) => (
 							<button
@@ -56,7 +56,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 							</button>
 						))}
 					</div>
-					<div className="w-full">
+					<div className="h-full w-full">
 						<TabPanel selected={tab} value="profile">
 							<UserProfile />
 						</TabPanel>

@@ -71,8 +71,23 @@ export type UserProps = Node & {
 	__typename?: "User";
 };
 
-export type WithdrawalProps = {
+export type ReferralProps = Node & {
+	__typename?: "Referral";
+	fullName: string;
+	email: string;
+	points: number;
+	status: "active" | "inactive";
+};
+
+export type WithdrawalProps = Node & {
 	__typename?: "Withdrawal";
+	amount: number;
+	date: Date;
+	status: "pending" | "successful" | "failed";
+};
+
+export type WithdrawalSummaryProps = {
+	__typename?: "Withdrawal Summary";
 	amount: number;
 	date: Date;
 	points: number;

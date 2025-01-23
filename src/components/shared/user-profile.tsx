@@ -25,7 +25,7 @@ export const UserProfile = () => {
 		});
 
 	return (
-		<form onSubmit={handleSubmit} className="h-full w-full">
+		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
 			<div className="space-y-5 border-y py-6">
 				<div className="grid grid-cols-2 gap-x-4">
 					<div>

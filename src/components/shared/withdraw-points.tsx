@@ -5,9 +5,9 @@ import { toast } from "sonner";
 import * as Yup from "yup";
 import React from "react";
 
+import type { WithdrawalSummaryProps } from "@/types";
 import { formatCurrency, maskEmail } from "@/lib";
 import { Button } from "@/components/ui/button";
-import type { WithdrawalProps } from "@/types";
 import { IconLabel } from "./icon-label";
 import { OtpInput } from "./otp-input";
 import { useInterval } from "@/hooks";
@@ -78,7 +78,7 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 		}
 	};
 
-	const withdrawal: WithdrawalProps = {
+	const withdrawal: WithdrawalSummaryProps = {
 		amount: values.baseAmount,
 		date: new Date(),
 		points: pointBalance,
@@ -239,7 +239,7 @@ const SummaryScreen = ({
 }: {
 	handleBack: () => void;
 	handleNext: () => void;
-	withdrawal: WithdrawalProps;
+	withdrawal: WithdrawalSummaryProps;
 }) => {
 	return (
 		<div className="space-y-6 rounded-lg border p-4 pt-9">

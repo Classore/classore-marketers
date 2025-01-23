@@ -1,3 +1,4 @@
+import { useQueries } from "@tanstack/react-query";
 import { toast } from "sonner";
 import React from "react";
 import {
@@ -11,11 +12,20 @@ import {
 	RiUserLine,
 } from "@remixicon/react";
 
-import { Appbar, Card, Seo, TabPanel, WithdrawPoints } from "@/components/shared";
+import { referral_list, withdrawal_list } from "@/mock";
 import { ChartBar } from "@/components/charts";
 import { Coin } from "@/assets/svgs/coin";
 import type { ChartData } from "@/types";
 import { greeting } from "@/lib";
+import {
+	Appbar,
+	Card,
+	Seo,
+	ReferralItem,
+	TabPanel,
+	WithdrawalItem,
+	WithdrawPoints,
+} from "@/components/shared";
 
 const TAB_OPTIONS = [
 	{ icon: RiUserAddLine, label: "Referral History", value: "referral" },
@@ -78,6 +88,10 @@ const Page = () => {
 	const [tab, setTab] = React.useState("referral");
 	const [open, setOpen] = React.useState(false);
 
+	const [] = useQueries({
+		queries: [],
+	});
+
 	const data: ChartData[] = React.useMemo(() => {
 		switch (selectedPeriod) {
 			case "THIS_YEAR":
@@ -105,7 +119,7 @@ const Page = () => {
 							Monitor your ward&apos;s progress with Classore
 						</p>
 					</div>
-					<div className="grid w-full grid-cols-2 gap-x-4">
+					<div className="grid max-h-[650px] w-full grid-cols-2 gap-x-4">
 						<div className="w-full space-y-3 rounded-2xl bg-white px-5 py-4">
 							<div className="flex w-full items-center justify-between">
 								<h5 className="text-lg font-semibold">Analytics Report</h5>
@@ -157,7 +171,7 @@ const Page = () => {
 								</div>
 							</div>
 
-							<div className="w-full">
+							<div className="w-full space-y-4">
 								<div className="flex h-10 w-full items-center gap-x-6 border-b">
 									{TAB_OPTIONS.map(({ icon: Icon, label, value }) => (
 										<button
@@ -169,8 +183,20 @@ const Page = () => {
 									))}
 								</div>
 								<div className="w-full">
-									<TabPanel selected={tab} value="referral"></TabPanel>
-									<TabPanel selected={tab} value="withdrawal"></TabPanel>
+									<TabPanel selected={tab} value="referral">
+										<div className="w-full space-y-4">
+											{referral_list.map((referral) => (
+												<ReferralItem key={referral.id} referral={referral} />
+											))}
+										</div>
+									</TabPanel>
+									<TabPanel selected={tab} value="withdrawal">
+										<div className="w-full space-y-4">
+											{withdrawal_list.map((withdrawal) => (
+												<WithdrawalItem key={withdrawal.id} withdrawal={withdrawal} />
+											))}
+										</div>
+									</TabPanel>
 								</div>
 							</div>
 						</div>
