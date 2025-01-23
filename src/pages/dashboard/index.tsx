@@ -2,11 +2,11 @@ import { useQueries } from "@tanstack/react-query";
 import type { GetServerSideProps } from "next";
 import { faker } from "@faker-js/faker";
 import { toast } from "sonner";
+import Link from "next/link";
 import React from "react";
 import {
 	RiFileCopyLine,
 	RiParentLine,
-	RiShareLine,
 	RiTeamLine,
 	RiUser4Line,
 	RiUserLine,
@@ -20,8 +20,9 @@ import { greeting } from "@/lib";
 import {
 	Appbar,
 	Card,
-	Seo,
 	ReferralItem,
+	Seo,
+	Sharer,
 	TabPanel,
 	WithdrawalItem,
 	WithdrawPoints,
@@ -42,7 +43,10 @@ interface PageProps {
 const Page = ({ referrals, withdrawals }: PageProps) => {
 	const [selectedPeriod, setSelectedPeriod] = React.useState("THIS_YEAR");
 	const [tab, setTab] = React.useState("referral");
-	const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState({
+		share: false,
+		withdraw: false,
+	});
 
 	const [] = useQueries({
 		queries: [],
@@ -104,7 +108,10 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 											<h3 className="text-2xl font-semibold text-white">330 Points</h3>
 											<p className="text-sm text-neutral-100">Your points equals NGN 33</p>
 										</div>
-										<WithdrawPoints onClose={setOpen} open={open} />
+										<WithdrawPoints
+											onClose={(withdraw) => setOpen({ ...open, withdraw })}
+											open={open.withdraw}
+										/>
 									</div>
 								</div>
 								<div className="w-full rounded-lg bg-gradient-to-r from-[#feede3]/40 to-[#6f42c1]/15 p-4">
@@ -114,9 +121,11 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 											<h4 className="text-2xl">CODE HERE</h4>
 										</div>
 										<div className="flex items-center gap-x-2">
-											<button className="flex h-10 w-[90px] items-center justify-center gap-x-2 rounded-3xl bg-white px-4 py-3 text-xs">
-												Share <RiShareLine className="size-4" />
-											</button>
+											<Sharer
+												onClose={(share) => setOpen({ ...open, share })}
+												open={open.share}
+												url="CODE HERE"
+											/>
 											<button
 												onClick={() => copy("CODE HERE")}
 												className="flex h-10 w-[90px] items-center justify-center gap-x-2 rounded-3xl bg-white px-4 py-3 text-xs">
@@ -144,6 +153,11 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 											{referrals.map((referral) => (
 												<ReferralItem key={referral.id} referral={referral} />
 											))}
+											<div className="flex items-center justify-center">
+												<Link href="/dashboard/referrals" className="link text-sm">
+													See all
+												</Link>
+											</div>
 										</div>
 									</TabPanel>
 									<TabPanel selected={tab} value="withdrawal">
@@ -151,6 +165,11 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 											{withdrawals.map((withdrawal) => (
 												<WithdrawalItem key={withdrawal.id} withdrawal={withdrawal} />
 											))}
+											<div className="flex items-center justify-center">
+												<Link href="/dashboard/withdrawals" className="link text-sm">
+													See all
+												</Link>
+											</div>
 										</div>
 									</TabPanel>
 								</div>

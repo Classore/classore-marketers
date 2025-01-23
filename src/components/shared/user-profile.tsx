@@ -61,6 +61,20 @@ export const UserProfile = () => {
 						<p className="text-xs text-red-500">{errors.email}</p>
 					)}
 				</div>
+				<div>
+					<label className="text-xs font-medium" htmlFor="phoneNumber">
+						Phone Number
+					</label>
+					<Input
+						type="tel"
+						name="phoneNumber"
+						onChange={handleChange}
+						placeholder="Enter Phone Number"
+					/>
+					{errors.phoneNumber && touched.phoneNumber && (
+						<p className="text-xs text-red-500">{errors.phoneNumber}</p>
+					)}
+				</div>
 				<div className="flex flex-col">
 					<label className="text-xs font-medium" htmlFor="dateOfBirth">
 						Date of Birth

@@ -15,8 +15,8 @@ const buttonVariants = cva(
 				outline:
 					"border border-neutral-300 text-neutral-800 bg-white hover:bg-neutral-100 text-neutral-800/50",
 				secondary: "bg-neutral-100 text-neutral-900 hover:bg-neutral-100/80 ",
-				sucess: "bg-green-500 text-white hover:bg-green-500/90",
-				"sucess-outline": "border border-green-500 text-green-500 hover:bg-neutral-50",
+				success: "bg-green-500 text-white hover:bg-green-500/90",
+				"success-outline": "border border-green-500 text-green-500 hover:bg-neutral-50",
 				ghost: "hover:bg-neutral-100 hover:text-neutral-900 ",
 				link: "text-neutral-900 underline-offset-4 hover:underline",
 				faded: "bg-white/50 text-white hover:bg-white/45",

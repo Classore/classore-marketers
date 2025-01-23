@@ -39,8 +39,8 @@ export const UserBankDetails = () => {
 							<SelectValue placeholder="Select Bank" />
 						</SelectTrigger>
 						<SelectContent>
-							{NIGERIAN_BANKS.sort((a, b) => a.name.localeCompare(b.name)).map((bank, index) => (
-								<SelectItem key={index} value={bank.name}>
+							{NIGERIAN_BANKS.sort((a, b) => a.name.localeCompare(b.name)).map((bank) => (
+								<SelectItem key={bank.code} value={bank.name}>
 									{bank.name}
 								</SelectItem>
 							))}
