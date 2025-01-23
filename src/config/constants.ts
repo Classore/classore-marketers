@@ -1,3 +1,10 @@
+import { RiDownload2Line, RiUserAddLine } from "@remixicon/react";
+
+export const TAB_OPTIONS = [
+	{ icon: RiUserAddLine, label: "Referral History", value: "referral" },
+	{ icon: RiDownload2Line, label: "Withdrawal History", value: "withdrawal" },
+];
+
 export const NIGERIAN_BANKS = [
 	{ name: "First Bank", code: "" },
 	{ name: "Guaranty Trust Bank (GTBank)", code: "" },

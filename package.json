@@ -7,7 +7,6 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"prettier:write-all": "prettier --write .",
 		"prettier:write": "prettier --write \"./src/**/*.{cjs,js,jsx,mjs,ts,tsx}\"",
 		"prettier:check": "prettier --check \"./src/**/*.{cjs,js,jsx,mjs,ts,tsx}\"",
 		"check-code": "npm run prettier:check && npm run lint"

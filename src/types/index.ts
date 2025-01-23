@@ -82,7 +82,7 @@ export type ReferralProps = Node & {
 export type WithdrawalProps = Node & {
 	__typename?: "Withdrawal";
 	amount: number;
-	date: Date;
+	date: Date | string;
 	status: "pending" | "successful" | "failed";
 };
 
