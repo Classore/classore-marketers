@@ -2,7 +2,12 @@ import type { HttpResponse, PaginatedResponse, PaginationProps } from "@/types";
 import { endpoints } from "@/config";
 import { axios } from "@/lib";
 
-interface CreateWithdrawlDto {}
+interface CreateWithdrawlDto {
+	amount: number;
+	recipientAccountNumber: string;
+	recipientAccountName: string;
+	recipientBank: string;
+}
 
 export const getWithdrawals = async (params?: PaginationProps & {}) => {
 	if (params) {
