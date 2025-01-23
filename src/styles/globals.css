@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-@import "~stream-chat-react/dist/css/v2/index.css";
 
 @tailwind base;
 @tailwind components;
@@ -76,7 +75,7 @@ html {
 }
 
 body {
-	background: #f2edf7;
+	background: #fff;
 	color: var(--neutral-900);
 	overflow-x: hidden;
 	/* user-select: none; */

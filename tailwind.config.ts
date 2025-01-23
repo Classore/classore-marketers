@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config: Config = {
 	darkMode: ["class"],
@@ -20,6 +20,9 @@ const config: Config = {
 			heading: ["var(--heading)"],
 		},
 		extend: {
+			backgroundImage: {
+				coin: "url('/assets/images/coins.svg')",
+			},
 			gridTemplateColumns: {
 				fluid: "repeat(auto-fit, minmax(300px, 1fr))",
 			},
@@ -95,6 +98,6 @@ const config: Config = {
 		},
 	},
 	plugins: [require("tailwindcss-animate"), require("@tailwindcss/forms")],
-}
+};
 
-export default config
+export default config;
