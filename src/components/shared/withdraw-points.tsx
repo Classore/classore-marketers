@@ -5,8 +5,8 @@ import { toast } from "sonner";
 import * as Yup from "yup";
 import React from "react";
 
+import { formatCurrency, formatTime, maskEmail } from "@/lib";
 import type { WithdrawalSummaryProps } from "@/types";
-import { formatCurrency, maskEmail } from "@/lib";
 import { Button } from "@/components/ui/button";
 import { IconLabel } from "./icon-label";
 import { OtpInput } from "./otp-input";
@@ -90,6 +90,8 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 	const handleBack = () => {
 		if (screen === "initial") {
 			onClose(false);
+			setSelectedPercentage(0);
+			setFieldValue("baseAmount", 0);
 		} else {
 			setScreen((prev) => screens[screens.indexOf(prev) - 1]);
 		}
@@ -118,6 +120,11 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 			onClose(false);
 		}
 	};
+
+	React.useEffect(() => {
+		setSelectedPercentage(0);
+		setFieldValue("baseAmount", 0);
+	}, [onClose]);
 
 	return (
 		<Dialog open={open} onOpenChange={(open) => onClose(open)}>
@@ -304,7 +311,7 @@ const VerificationScreen = ({
 	};
 
 	const handleResend = () => {
-		setTimer(60);
+		setTimer(180);
 	};
 
 	return (
@@ -321,14 +328,19 @@ const VerificationScreen = ({
 			<Button className="w-full" onClick={handleVerification}>
 				Verify
 			</Button>
-			<div className="flex items-center justify-center gap-x-1">
-				<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
-				<button
-					onClick={handleResend}
-					disabled={timer > 0}
-					className="text-xs text-secondary-400">
-					Resend
-				</button>
+			<div className="flex flex-col items-center gap-y-4">
+				{timer > 0 && (
+					<p className="text-xs text-neutral-400">Resend in {formatTime(timer)}</p>
+				)}
+				<div className="flex items-center justify-center gap-x-1">
+					<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
+					<button
+						onClick={handleResend}
+						disabled={timer > 0}
+						className="cursor-pointer text-xs text-secondary-400 disabled:text-secondary-100">
+						Resend
+					</button>
+				</div>
 			</div>
 		</div>
 	);

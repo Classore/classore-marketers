@@ -36,7 +36,7 @@ export const Sharer = ({ onClose, open, url }: Props) => {
 						{share_links(url).map(({ href, icon: Icon, label }, index) => (
 							<div key={index} className="flex items-center gap-x-4">
 								<Icon className="size-5" />
-								<a href={href} className="link text-sm">
+								<a href={href} target="_blank" className="link text-sm">
 									{label}
 								</a>
 							</div>
