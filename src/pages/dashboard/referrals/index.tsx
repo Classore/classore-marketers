@@ -9,8 +9,9 @@ import {
 	RiUserMinusLine,
 } from "@remixicon/react";
 
-import { Appbar, DataCard, Pagination, Seo } from "@/components/shared";
+import { Appbar, DataCard, DataTable, Pagination, Seo } from "@/components/shared";
 import { getReferrals } from "@/queries/referral";
+import { referral_columns } from "@/config/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks";
@@ -43,8 +44,8 @@ const Page = () => {
 		<>
 			<Seo title="Referrals" />
 			<Appbar />
-			<main className="container h-[calc(100vh-96px)] space-y-5 py-10">
-				<div className="h-full w-full space-y-4 rounded-3xl bg-neutral-100 p-3">
+			<main className="container h-[calc(100vh-96px)] space-y-5 overflow-hidden py-10">
+				<div className="h-full w-full space-y-4 overflow-y-auto rounded-3xl bg-neutral-100 p-3">
 					<Button onClick={() => router.back()} size="sm" variant="outline">
 						<RiArrowLeftSLine className="size-4" /> Back
 					</Button>
@@ -59,7 +60,7 @@ const Page = () => {
 							<Input
 								value={search}
 								onChange={(e) => setSearcch(e.target.value)}
-								className="h-8 w-[250px]"
+								className="h-8 w-[250px] border-neutral-600"
 							/>
 							<Select>
 								<SelectTrigger className="h-8 w-[180px] text-sm">
@@ -72,6 +73,7 @@ const Page = () => {
 								</SelectContent>
 							</Select>
 						</div>
+						<DataTable columns={referral_columns} data={[]} />
 						<Pagination current={page} onPageChange={setPage} pageSize={10} total={0} />
 					</div>
 				</div>

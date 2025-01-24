@@ -51,7 +51,7 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
 						<TableRow key={headerGroup.id}>
 							{headerGroup.headers.map((header) => {
 								return (
-									<TableHead key={header.id} className="text-sm font-medium text-neutral-400">
+									<TableHead key={header.id} className="text-sm font-medium text-neutral-600">
 										{header.isPlaceholder
 											? null
 											: flexRender(header.column.columnDef.header, header.getContext())}
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({ columns, data }: Props<TData, TValue>
 						))
 					) : (
 						<TableRow>
-							<TableCell colSpan={columns.length} className="h-24 text-center">
+							<TableCell colSpan={columns.length} className="h-[400px] text-center">
 								No results.
 							</TableCell>
 						</TableRow>

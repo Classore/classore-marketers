@@ -25,14 +25,14 @@ export const DataCard = ({
 	variant = "success",
 }: Props) => {
 	return (
-		<div className="flex aspect-[1.84/1] w-full flex-col gap-y-4 rounded-xl border px-5 py-[15px]">
+		<div className="flex aspect-[1.84/1] w-full flex-col gap-y-4 rounded-xl border border-neutral-800 px-5 py-[15px]">
 			<div className="grid size-8 place-items-center rounded-full border">
 				<Icon size={20} />
 			</div>
 			<div className="flex w-full items-center justify-between">
 				<div className="flex flex-col gap-y-2">
 					<h6 className="text-xl font-semibold">{value.toLocaleString()}</h6>
-					<p className="text-xs text-neutral-400">{label}</p>
+					<p className="text-xs text-neutral-600">{label}</p>
 				</div>
 				{percentage && (
 					<div

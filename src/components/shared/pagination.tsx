@@ -29,7 +29,7 @@ export const Pagination = (props: Props) => {
 		<button
 			key={index}
 			onClick={() => onPageChange(index)}
-			className={`grid size-8 place-items-center rounded-md text-sm font-medium ${current === index ? "bg-neutral-200 text-neutral-900" : "text-neutral-400"}`}>
+			className={`grid size-8 place-items-center rounded-md text-sm font-medium ${current === index ? "bg-neutral-200 text-black" : "text-neutral-600"}`}>
 			{index}
 		</button>
 	);
@@ -88,7 +88,7 @@ export const Pagination = (props: Props) => {
 	return (
 		<div className="flex w-full items-center justify-between">
 			<div className="flex items-center gap-2">
-				<p className="text-sm font-medium text-neutral-400">
+				<p className="text-sm font-medium text-neutral-600">
 					Showing results {(current - 1) * pageSize + 1} -{" "}
 					{Math.min(current * pageSize, total)} of {total}
 				</p>

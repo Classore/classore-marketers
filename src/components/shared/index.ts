@@ -2,6 +2,7 @@ export * from "./appbar";
 export * from "./backdrop";
 export * from "./card";
 export * from "./data-card";
+export * from "./data-table";
 export * from "./error-message";
 export * from "./icon-label";
 export * from "./icon";

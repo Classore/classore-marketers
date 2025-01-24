@@ -26,7 +26,28 @@ export const referral_columns: ColumnDef<ReferralProps>[] = [
 		),
 	},
 	{
+		accessorKey: "fullName",
+		header: "Full Name",
+	},
+	{
+		accessorKey: "email",
+		header: "Email Address",
+	},
+	{
+		accessorKey: "createdOn",
+		header: "Date Joined",
+	},
+	{
+		accessorKey: "points",
+		header: "Points",
+	},
+	{
+		accessorKey: "status",
+		header: "Status",
+	},
+	{
 		accessorKey: "actions",
+		header: "Actions",
 		cell: ({}) => {
 			return (
 				<Dialog>

@@ -26,7 +26,19 @@ export const withdrawal_columns: ColumnDef<WithdrawalProps>[] = [
 		),
 	},
 	{
-		accessorKey: "actions",
+		accessorKey: "amount",
+		header: "Amount",
+	},
+	{
+		accessorKey: "date",
+		header: "Date and Time",
+	},
+	{
+		accessorKey: "status",
+		header: "Status",
+	},
+	{
+		accessorKey: "Actions",
 		cell: ({}) => {
 			return (
 				<Dialog>
