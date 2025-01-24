@@ -31,7 +31,7 @@ const PERCENTAGE_OPTIONS = [
 	{ label: "25%", value: 25 },
 	{ label: "50%", value: 50 },
 	{ label: "75%", value: 75 },
-	{ label: "Max", value: 99 },
+	{ label: "Max", value: 90 },
 ];
 
 export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) => {
@@ -59,8 +59,8 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 
 	const calculatedAmount = React.useMemo(() => {
 		if (selectedPercentage === 0) return values.baseAmount;
-		return Math.floor((values.baseAmount * selectedPercentage) / 100);
-	}, [selectedPercentage, values.baseAmount]);
+		return Math.floor((pointBalance * selectedPercentage) / 100);
+	}, [pointBalance, selectedPercentage]);
 
 	const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;

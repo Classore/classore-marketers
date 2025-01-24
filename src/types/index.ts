@@ -98,7 +98,7 @@ export type WithdrawalSummaryProps = {
 
 export type ChartData = {
 	referral: number;
-	date: string;
+	date: Date;
 };
 
 export type NotificationProps = Node & {

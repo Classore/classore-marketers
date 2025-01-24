@@ -13,9 +13,9 @@ import {
 } from "@remixicon/react";
 
 import type { ChartData, ReferralProps, WithdrawalProps } from "@/types";
+import { type Period, TAB_OPTIONS } from "@/config";
 import { ChartBar } from "@/components/charts";
 import { Coin } from "@/assets/svgs/coin";
-import { TAB_OPTIONS } from "@/config";
 import { greeting } from "@/lib";
 import {
 	Appbar,
@@ -41,7 +41,7 @@ interface PageProps {
 }
 
 const Page = ({ referrals, withdrawals }: PageProps) => {
-	const [selectedPeriod, setSelectedPeriod] = React.useState("THIS_YEAR");
+	const [selectedPeriod, setSelectedPeriod] = React.useState<Period>("THIS_YEAR");
 	const [tab, setTab] = React.useState("referral");
 	const [open, setOpen] = React.useState({
 		share: false,

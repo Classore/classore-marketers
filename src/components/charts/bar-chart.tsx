@@ -1,6 +1,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-import { PERIOD_OPTIONS } from "@/config";
+import { type Period, PERIOD_OPTIONS, formatDate } from "@/config";
 import type { ChartData } from "@/types";
 import {
 	type ChartConfig,
@@ -11,8 +11,8 @@ import {
 
 interface Props {
 	data: ChartData[];
-	selectedPeriod: string;
-	setSelectedPeriod: (period: string) => void;
+	selectedPeriod: Period;
+	setSelectedPeriod: (period: Period) => void;
 }
 
 export function ChartBar({ data, selectedPeriod, setSelectedPeriod }: Props) {
@@ -42,7 +42,13 @@ export function ChartBar({ data, selectedPeriod, setSelectedPeriod }: Props) {
 				<BarChart accessibilityLayer data={data}>
 					<CartesianGrid vertical={false} />
 					<YAxis tickLine={false} axisLine={false} tickMargin={10} />
-					<XAxis dataKey="date" tickLine={false} tickMargin={10} axisLine={false} />
+					<XAxis
+						dataKey="date"
+						tickLine={false}
+						tickMargin={10}
+						axisLine={false}
+						tickFormatter={(value) => formatDate(new Date(value), selectedPeriod)}
+					/>
 					<ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
 					<Bar dataKey="referral" fill="var(--color-referral)" radius={[8, 8, 0, 0]} />
 				</BarChart>

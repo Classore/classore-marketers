@@ -9,7 +9,7 @@ interface Props {
 
 export const Card = ({ icon: Icon, label, value }: Props) => {
 	return (
-		<div className="rounded-lg border p-3">
+		<div className="relative rounded-lg border p-3 transition-all duration-500 hover:shadow-md">
 			<div className="flex w-full items-start gap-x-4">
 				<div className="grid size-9 place-items-center rounded-full border">
 					<Icon className="size-5" />
