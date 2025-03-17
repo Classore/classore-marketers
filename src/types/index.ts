@@ -130,6 +130,10 @@ export interface AnalyticsProps {
 	parent: number;
 	marketer: number;
 	total_count: number;
+	points: {
+		referral_points: number;
+		monetary_value: number;
+	};
 }
 
 export type ChartData = {
@@ -141,4 +145,37 @@ export type NotificationProps = Node & {
 	__typename?: "Notification";
 	content: string;
 	title: string;
+};
+
+export type BankProps = {
+	bank_id: string;
+	bank_copied_from: Maybe<string>;
+	bank_createdOn: Maybe<Date>;
+	bank_updatedOn: Maybe<Date>;
+	bank_updatedBy: Maybe<string>;
+	bank_deletedOn: Maybe<Date>;
+	bank_deletedBy: Maybe<string>;
+	bank_isDeleted: boolean;
+	bank_isBlocked: boolean;
+	bank_name: string;
+	bank_slug: string;
+	bank_code: string;
+	bank_longcode: string;
+};
+
+export type BankDetailsProps = {
+	bank_detail_id: string;
+	bank_detail_copied_from: null;
+	bank_detail_createdOn: Date;
+	bank_detail_updatedOn: Date;
+	bank_detail_updatedBy: Maybe<string>;
+	bank_detail_deletedOn: Maybe<Date>;
+	bank_detail_deletedBy: Maybe<string>;
+	bank_detail_isDeleted: boolean;
+	bank_detail_isBlocked: boolean;
+	bank_detail_account_number: string;
+	bank_detail_account_name: string;
+	bank_detail_user_id: string;
+	bank_detail_bank_id: string;
+	bank_detail_bank_name: string;
 };

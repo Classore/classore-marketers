@@ -1,6 +1,7 @@
 import { endpoints } from "@/config";
 import { axios } from "@/lib";
 import type {
+	BankProps,
 	HttpResponse,
 	PaginatedResponse,
 	PaginationProps,
@@ -11,7 +12,7 @@ interface CreateWithdrawlDto {
 	amount: number;
 }
 
-export const getWithdrawals = async (params?: PaginationProps & {}) => {
+const getWithdrawals = async (params?: PaginationProps & {}) => {
 	if (params) {
 		for (const key in params) {
 			if (
@@ -29,14 +30,24 @@ export const getWithdrawals = async (params?: PaginationProps & {}) => {
 		.then((res) => res.data);
 };
 
-export const createWithdrawal = async (data: CreateWithdrawlDto) => {
+const getBanks = async (params?: PaginationProps & {}) => {
+	return axios
+		.get<
+			HttpResponse<PaginatedResponse<BankProps>>
+		>(endpoints().withdrawals.get_banks, { params })
+		.then((res) => res.data);
+};
+
+const createWithdrawal = async (data: CreateWithdrawlDto) => {
 	return axios
 		.post<HttpResponse<string>>(endpoints().withdrawals.create, data)
 		.then((res) => res.data);
 };
 
-export const verifyWithdrawal = async (data: string) => {
+const verifyWithdrawal = async (data: string) => {
 	return axios
 		.post<HttpResponse<string>>(endpoints().withdrawals.verify, data)
 		.then((res) => res.data);
 };
+
+export { createWithdrawal, getBanks, getWithdrawals, verifyWithdrawal };

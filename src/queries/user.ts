@@ -1,11 +1,10 @@
-import type { HttpResponse, UserProps } from "@/types";
+import type { BankDetailsProps, HttpResponse, UserProps } from "@/types";
 import { endpoints } from "@/config";
 import { axios } from "@/lib";
 
-export interface BankDetailsProps {
-	accountName: string;
-	accountNumber: string;
-	bankName: string;
+export interface BankDetailsDto {
+	account_number: string | undefined;
+	bank_id: string | undefined;
 }
 
 export interface SecurityProps {
@@ -20,9 +19,17 @@ const updateUser = async (userId: string, values: Partial<UserProps>) => {
 		.then((res) => res.data);
 };
 
-const updateBankDetails = async (userId: string, values: BankDetailsProps) => {
+const getBankDetails = async () => {
 	return axios
-		.put<HttpResponse<BankDetailsProps>>(endpoints(userId).user.update_bank_details, values)
+		.get<HttpResponse<BankDetailsProps[]>>(endpoints().user.get_bank_details)
+		.then((res) => res.data);
+};
+
+const updateBankDetails = async (userId: string, values: BankDetailsDto) => {
+	return axios
+		.post<
+			HttpResponse<BankDetailsProps>
+		>(endpoints(userId).user.update_bank_details, values)
 		.then((res) => res.data);
 };
 
@@ -32,4 +39,4 @@ const updateSecurity = async (userId: string, values: SecurityProps) => {
 		.then((res) => res.data);
 };
 
-export { updateBankDetails, updateSecurity, updateUser };
+export { getBankDetails, updateBankDetails, updateSecurity, updateUser };

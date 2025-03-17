@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
+import type { BankDetailsProps, Maybe, UserProps } from "@/types";
 import { createPersistMiddleware } from "../middleware";
-import type { Maybe, UserProps } from "@/types";
 
 interface SignOutOptions {
 	redirectUrl?: string;
@@ -10,14 +10,18 @@ interface SignOutOptions {
 
 interface UserStore {
 	user: Maybe<UserProps>;
+	bankDetails: Maybe<BankDetailsProps>;
 	signin: (user: UserProps) => void;
 	signout: (options?: SignOutOptions) => void;
+	setBankDetails: (bankDetails: BankDetailsProps) => void;
 }
 
 const initialState: UserStore = {
 	user: null,
+	bankDetails: null,
 	signin: () => {},
 	signout: () => {},
+	setBankDetails: () => {},
 };
 
 const useUserStore = createPersistMiddleware<UserStore>("classore-marketers", (set) => ({
@@ -41,6 +45,9 @@ const useUserStore = createPersistMiddleware<UserStore>("classore-marketers", (s
 			window.location.href = options?.redirectUrl || "/";
 			window.localStorage.removeItem("classore-marketers");
 		}
+	},
+	setBankDetails: (bankDetails) => {
+		set({ bankDetails });
 	},
 }));
 

@@ -11,12 +11,13 @@ import {
 } from "@remixicon/react";
 
 import { getReferralCharts, getReferrals } from "@/queries/referral";
+import { capitalize, formatCurrency, greeting } from "@/lib";
 import { getWithdrawals } from "@/queries/withdrawal";
 import { type Period, TAB_OPTIONS } from "@/config";
 import { getAnylytics } from "@/queries/analytics";
 import { useUserStore } from "@/store/chunks/user";
+import { getBankDetails } from "@/queries/user";
 import { ChartBar } from "@/components/charts";
-import { capitalize, greeting } from "@/lib";
 import { Coin } from "@/assets/svgs/coin";
 import {
 	Appbar,
@@ -31,8 +32,8 @@ import {
 
 const Dashboard = () => {
 	const [selectedPeriod, setSelectedPeriod] = useState<Period>("THIS_YEAR");
+	const { user, setBankDetails } = useUserStore();
 	const [tab, setTab] = useState("referral");
-	const { user } = useUserStore();
 	const [modalState, setModalState] = useState({
 		share: false,
 		withdraw: false,
@@ -56,6 +57,10 @@ const Dashboard = () => {
 				queryKey: ["get-withdrawals"],
 				queryFn: () => getWithdrawals({ limit: 10, page: 1 }),
 			},
+			{
+				queryFn: () => getBankDetails(),
+				queryKey: ["get-banks-details"],
+			},
 		],
 	});
 
@@ -64,7 +69,15 @@ const Dashboard = () => {
 		{ data: referralCharts, isLoading: isChartsLoading },
 		{ data: referrals },
 		{ data: withdrawals },
+		{ data: bankDetails },
 	] = queries;
+
+	React.useEffect(() => {
+		if (bankDetails?.data) {
+			const details = bankDetails.data[0];
+			setBankDetails(details);
+		}
+	}, [bankDetails, setBankDetails]);
 
 	const copyReferralCode = () => {
 		if (!user?.referal_code) return;
@@ -76,10 +89,12 @@ const Dashboard = () => {
 		setModalState((prev) => ({ ...prev, [type]: isOpen }));
 	};
 
-	const getTotalCount = () => analytics?.data.total_count || 0;
 	const getParentCount = () => analytics?.data.parent || 0;
 	const getStudentCount = () => analytics?.data.student || 0;
 	const getMarketerCount = () => analytics?.data.marketer || 0;
+	const getTotalCount = () => analytics?.data.total_count || 0;
+	const getMonetaryValue = () => analytics?.data.points.monetary_value || 0;
+	const getReferralPoints = () => analytics?.data.points.referral_points || 0;
 
 	const renderTabContent = () => {
 		if (tab === "referral") {
@@ -186,8 +201,12 @@ const Dashboard = () => {
 											<Coin className="size-6 text-red-500" />
 										</div>
 										<div className="w-full space-y-1">
-											<h3 className="text-2xl font-semibold text-white">330 Points</h3>
-											<p className="text-sm text-neutral-100">Your points equals NGN 33</p>
+											<h3 className="text-2xl font-semibold text-white">
+												{getReferralPoints()} Points
+											</h3>
+											<p className="text-sm text-neutral-100">
+												Your points equals {formatCurrency(getMonetaryValue())}
+											</p>
 										</div>
 										<WithdrawPoints
 											onClose={(withdraw) => toggleModal("withdraw", withdraw)}
@@ -205,7 +224,10 @@ const Dashboard = () => {
 											<Sharer
 												onClose={(share) => toggleModal("share", share)}
 												open={modalState.share}
-												url={user?.referal_code || ""}
+												url={
+													`https://classore.com/signup?step=1&referral_code=${user?.referal_code}` ||
+													""
+												}
 											/>
 											<button
 												onClick={copyReferralCode}
