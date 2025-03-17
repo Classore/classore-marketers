@@ -12,6 +12,7 @@ import {
 import { Appbar, DataCard, DataTable, Pagination, Seo } from "@/components/shared";
 import { getReferrals } from "@/queries/referral";
 import { referral_columns } from "@/config/table";
+import { type Period, PERIOD_OPTIONS } from "@/config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks";
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/select";
 
 const Page = () => {
+	const [timeLine, setTimeLine] = React.useState<Period>("TODAY");
 	const [search, setSearcch] = React.useState("");
 	const [page, setPage] = React.useState(1);
 	const router = useRouter();
@@ -32,7 +34,7 @@ const Page = () => {
 
 	const {} = useQuery({
 		queryKey: ["get-referrals", page],
-		queryFn: () => getReferrals({ limit: 10, page }),
+		queryFn: () => getReferrals({ timeLine, limit: 10, page }),
 		enabled: false,
 		select: (data) => ({
 			referrals: data.data.data,
@@ -70,6 +72,18 @@ const Page = () => {
 									<SelectItem value="all">All</SelectItem>
 									<SelectItem value="active">Active</SelectItem>
 									<SelectItem value="inactive">Inactive</SelectItem>
+								</SelectContent>
+							</Select>
+							<Select value={timeLine} onValueChange={(value) => setTimeLine(value as Period)}>
+								<SelectTrigger className="h-8 w-[180px] text-sm">
+									<SelectValue placeholder="select period" />
+								</SelectTrigger>
+								<SelectContent className="text-sm">
+									{PERIOD_OPTIONS.map(({ label, value }) => (
+										<SelectItem key={value} value={value}>
+											{label}
+										</SelectItem>
+									))}
 								</SelectContent>
 							</Select>
 						</div>
