@@ -1,8 +1,13 @@
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { toast } from "sonner";
 import React from "react";
 
+import { type BankDetailsProps, updateBankDetails } from "@/queries/user";
+import { useUserStore } from "@/store/chunks/user";
 import { NIGERIAN_BANKS } from "@/config";
 import { Button } from "../ui/button";
+import { queryClient } from "@/lib";
 import { Input } from "../ui/input";
 import {
 	Select,
@@ -13,6 +18,24 @@ import {
 } from "../ui/select";
 
 export const UserBankDetails = () => {
+	const { user } = useUserStore();
+
+	const {} = useMutation({
+		mutationFn: (payload: BankDetailsProps) => updateBankDetails(String(user?.id), payload),
+		mutationKey: ["bank-details"],
+		onSuccess: (data) => {
+			console.log(data);
+			toast.success("Bank details updated successfully");
+		},
+		onError: (error) => {
+			console.error(error);
+			toast.error("Error updating bank details");
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ["get-user"] });
+		},
+	});
+
 	const { errors, handleChange, handleSubmit, resetForm, setFieldValue, touched, values } =
 		useFormik({
 			initialValues: {

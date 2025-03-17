@@ -62,6 +62,7 @@ export type Node = {
 	createdOn?: Date | string;
 	deletedBy?: Maybe<string>;
 	deletedOn?: Date | string;
+	isBlocked?: boolean;
 	isDeleted?: boolean;
 	updatedBy?: Maybe<string>;
 	updatedOn?: Date | string;
@@ -69,6 +70,34 @@ export type Node = {
 
 export type UserProps = Node & {
 	__typename?: "User";
+	copied_from: Maybe<string>;
+	first_name: string;
+	last_name: string;
+	phone_number: Maybe<string>;
+	email: string;
+	access_token: string;
+	referal_code: string;
+	wallet_id: Maybe<string>;
+	role: Node & {
+		copied_from: Maybe<string>;
+		name: string;
+		waitlist_read: "NO";
+		waitlist_write: "NO";
+		student_read: "YES";
+		student_write: "NO";
+		admin_read: "NO";
+		admin_write: "NO";
+		tutor_read: "NO";
+		tutor_write: "NO";
+		videos_read: "NO";
+		videos_write: "NO";
+		transactions_read: "NO";
+		transactions_write: "NO";
+		marketer_read: "YES";
+		marketer_write: "YES";
+		admin_delete_read: "NO";
+		admin_delete_write: "NO";
+	};
 };
 
 export type ReferralProps = Node & {
@@ -96,9 +125,16 @@ export type WithdrawalSummaryProps = {
 	recipientBank: string;
 };
 
+export interface AnalyticsProps {
+	student: number;
+	parent: number;
+	marketer: number;
+	total_count: number;
+}
+
 export type ChartData = {
-	referral: number;
-	date: Date;
+	count: number;
+	day_or_month: Date;
 };
 
 export type NotificationProps = Node & {

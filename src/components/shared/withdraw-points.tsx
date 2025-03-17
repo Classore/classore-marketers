@@ -1,16 +1,16 @@
 import { RiArrowLeftSLine, RiDownload2Line } from "@remixicon/react";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import React from "react";
 
-import { formatCurrency, formatTime, maskEmail } from "@/lib";
-import type { WithdrawalSummaryProps } from "@/types";
+import type { HttpError, WithdrawalSummaryProps } from "@/types";
+import { createWithdrawal } from "@/queries/withdrawal";
 import { Button } from "@/components/ui/button";
 import { IconLabel } from "./icon-label";
-import { OtpInput } from "./otp-input";
-import { useInterval } from "@/hooks";
+import { formatCurrency } from "@/lib";
 import { Input } from "../ui/input";
 import {
 	Dialog,
@@ -26,7 +26,7 @@ interface Props {
 	pointBalance?: number;
 }
 
-const screens = ["initial", "summary", "verification", "success"] as const;
+const screens = ["initial", "summary", "success"] as const;
 const PERCENTAGE_OPTIONS = [
 	{ label: "25%", value: 25 },
 	{ label: "50%", value: 50 },
@@ -37,9 +37,26 @@ const PERCENTAGE_OPTIONS = [
 export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) => {
 	const [screen, setScreen] = React.useState<(typeof screens)[number]>("initial");
 	const [selectedPercentage, setSelectedPercentage] = React.useState(0);
-	const [otp, setOtp] = React.useState("");
 
 	const maxWithdrawal = pointBalance * 0.9;
+
+	const {} = useMutation({
+		mutationFn: (amount: number) => createWithdrawal({ amount }),
+		mutationKey: ["initiate-withdrawal"],
+		onSuccess: (data) => {
+			console.log(data);
+			toast.success("Withdrawal initiated successfully");
+			setScreen("success");
+		},
+		onError: (error: HttpError) => {
+			const errorMessage = Array.isArray(error.response?.data?.message)
+				? error.response?.data?.message[0]
+				: error.response?.data?.message;
+			const message = errorMessage || "Something went wrong, please try again later";
+			console.log(error);
+			toast.error(message);
+		},
+	});
 
 	const { errors, handleSubmit, setFieldValue, values, touched } = useFormik({
 		initialValues: {
@@ -60,7 +77,7 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 	const calculatedAmount = React.useMemo(() => {
 		if (selectedPercentage === 0) return values.baseAmount;
 		return Math.floor((pointBalance * selectedPercentage) / 100);
-	}, [pointBalance, selectedPercentage]);
+	}, [pointBalance, selectedPercentage, values.baseAmount]);
 
 	const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
@@ -109,22 +126,18 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 			}
 			setScreen("summary");
 		} else if (screen === "summary") {
-			setScreen("verification");
-		} else if (screen === "verification") {
-			if (!otp) {
-				toast.error("Please enter an OTP");
-				return;
-			}
 			setScreen("success");
 		} else {
 			onClose(false);
+			setScreen("initial");
+			setFieldValue("baseAmount", 0);
 		}
 	};
 
 	React.useEffect(() => {
 		setSelectedPercentage(0);
 		setFieldValue("baseAmount", 0);
-	}, [onClose]);
+	}, [onClose, setFieldValue]);
 
 	return (
 		<Dialog open={open} onOpenChange={(open) => onClose(open)}>
@@ -153,14 +166,14 @@ export const WithdrawPoints = ({ onClose, open, pointBalance = 10000 }: Props) =
 						withdrawal={withdrawal}
 					/>
 				)}
-				{screen === "verification" && (
+				{/* {screen === "verification" && (
 					<VerificationScreen
 						handleBack={handleBack}
 						handleNext={handleNext}
 						onChange={setOtp}
 						otp={otp}
 					/>
-				)}
+				)} */}
 				{screen === "success" && <ResponseScreen handleNext={handleNext} />}
 			</DialogContent>
 		</Dialog>
@@ -289,69 +302,72 @@ const SummaryScreen = ({
 	);
 };
 
-const VerificationScreen = ({
-	handleBack,
-	handleNext,
-	onChange,
-	otp,
-}: {
-	handleBack: () => void;
-	handleNext: () => void;
-	onChange: (value: string) => void;
-	otp: string;
-}) => {
-	const [timer, setTimer] = React.useState(180);
+// const VerificationScreen = ({
+// 	handleBack,
+// 	handleNext,
+// 	onChange,
+// 	otp,
+// }: {
+// 	handleBack: () => void;
+// 	handleNext: () => void;
+// 	onChange: (value: string) => void;
+// 	otp: string;
+// }) => {
+// 	const [timer, setTimer] = React.useState(180);
 
-	useInterval(() => {
-		setTimer((prev) => (prev > 0 ? prev - 1 : 0));
-	}, 1000);
+// 	useInterval(() => {
+// 		setTimer((prev) => (prev > 0 ? prev - 1 : 0));
+// 	}, 1000);
 
-	const handleVerification = () => {
-		handleNext();
-	};
+// 	const handleVerification = () => {
+// 		handleNext();
+// 	};
 
-	const handleResend = () => {
-		setTimer(180);
-	};
+// 	const handleResend = () => {
+// 		setTimer(180);
+// 	};
 
-	return (
-		<div className="space-y-6 rounded-lg border p-4 pt-9">
-			<Button onClick={handleBack} variant="outline">
-				<RiArrowLeftSLine /> Back
-			</Button>
-			<IconLabel icon={RiDownload2Line} />
-			<DialogTitle>Enter Verification Code</DialogTitle>
-			<DialogDescription>
-				A 6-digit code has been sent to <b>{maskEmail("okunolaosamson@gmail.com")}</b>
-			</DialogDescription>
-			<OtpInput onChange={onChange} value={otp} length={6} />
-			<Button className="w-full" onClick={handleVerification}>
-				Verify
-			</Button>
-			<div className="flex flex-col items-center gap-y-4">
-				{timer > 0 && (
-					<p className="text-xs text-neutral-400">Resend in {formatTime(timer)}</p>
-				)}
-				<div className="flex items-center justify-center gap-x-1">
-					<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
-					<button
-						onClick={handleResend}
-						disabled={timer > 0}
-						className="cursor-pointer text-xs text-secondary-400 disabled:text-secondary-100">
-						Resend
-					</button>
-				</div>
-			</div>
-		</div>
-	);
-};
+// 	return (
+// 		<div className="space-y-6 rounded-lg border p-4 pt-9">
+// 			<Button onClick={handleBack} variant="outline">
+// 				<RiArrowLeftSLine /> Back
+// 			</Button>
+// 			<IconLabel icon={RiDownload2Line} />
+// 			<DialogTitle>Enter Verification Code</DialogTitle>
+// 			<DialogDescription>
+// 				A 6-digit code has been sent to <b>{maskEmail("okunolaosamson@gmail.com")}</b>
+// 			</DialogDescription>
+// 			<OtpInput onChange={onChange} value={otp} length={6} />
+// 			<Button className="w-full" onClick={handleVerification}>
+// 				Verify
+// 			</Button>
+// 			<div className="flex flex-col items-center gap-y-4">
+// 				{timer > 0 && (
+// 					<p className="text-xs text-neutral-400">Resend in {formatTime(timer)}</p>
+// 				)}
+// 				<div className="flex items-center justify-center gap-x-1">
+// 					<p className="text-xs text-neutral-400">Didn&apos;t recieve a mail?</p>
+// 					<button
+// 						onClick={handleResend}
+// 						disabled={timer > 0}
+// 						className="cursor-pointer text-xs text-secondary-400 disabled:text-secondary-100">
+// 						Resend
+// 					</button>
+// 				</div>
+// 			</div>
+// 		</div>
+// 	);
+// };
 
 const ResponseScreen = ({ handleNext }: { handleNext: () => void }) => {
 	return (
 		<div className="space-y-6 rounded-lg border p-4 pt-9">
 			<IconLabel icon={RiDownload2Line} />
 			<DialogTitle>Success</DialogTitle>
-			<DialogDescription hidden>success</DialogDescription>
+			<DialogDescription>
+				Your withdrawal request has been successfully submitted. You will be notified when
+				your withdrawal is processed.
+			</DialogDescription>
 			<Button className="w-full" onClick={handleNext}>
 				Go to Dashboard
 			</Button>

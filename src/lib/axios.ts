@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
 	(config) => {
-		const token = Cookies.get("CLASSORE_MARKETER_TOKEN");
+		const token = Cookies.get("classore-marketer");
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}

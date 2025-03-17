@@ -1,9 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
-import type { GetServerSideProps } from "next";
-import { faker } from "@faker-js/faker";
 import { toast } from "sonner";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {
 	RiFileCopyLine,
 	RiParentLine,
@@ -12,11 +10,14 @@ import {
 	RiUserLine,
 } from "@remixicon/react";
 
-import type { ChartData, ReferralProps, WithdrawalProps } from "@/types";
+import { getReferralCharts, getReferrals } from "@/queries/referral";
+import { getWithdrawals } from "@/queries/withdrawal";
 import { type Period, TAB_OPTIONS } from "@/config";
+import { getAnylytics } from "@/queries/analytics";
+import { useUserStore } from "@/store/chunks/user";
 import { ChartBar } from "@/components/charts";
+import { capitalize, greeting } from "@/lib";
 import { Coin } from "@/assets/svgs/coin";
-import { greeting } from "@/lib";
 import {
 	Appbar,
 	Card,
@@ -28,44 +29,122 @@ import {
 	WithdrawPoints,
 } from "@/components/shared";
 
-import { day_data, month_data, week_data, year_data } from "@/mock";
-
-const copy = (value: string) => {
-	navigator.clipboard.writeText(value);
-	toast.success("Referral code copied!");
-};
-
-interface PageProps {
-	referrals: ReferralProps[];
-	withdrawals: WithdrawalProps[];
-}
-
-const Page = ({ referrals, withdrawals }: PageProps) => {
-	const [selectedPeriod, setSelectedPeriod] = React.useState<Period>("THIS_YEAR");
-	const [tab, setTab] = React.useState("referral");
-	const [open, setOpen] = React.useState({
+const Dashboard = () => {
+	const [selectedPeriod, setSelectedPeriod] = useState<Period>("THIS_YEAR");
+	const [tab, setTab] = useState("referral");
+	const { user } = useUserStore();
+	const [modalState, setModalState] = useState({
 		share: false,
 		withdraw: false,
 	});
 
-	const [] = useQueries({
-		queries: [],
+	const queries = useQueries({
+		queries: [
+			{
+				queryKey: ["analytics"],
+				queryFn: () => getAnylytics(),
+			},
+			{
+				queryKey: ["referral_charts", selectedPeriod],
+				queryFn: () => getReferralCharts({ timeLine: selectedPeriod, limit: 10, page: 1 }),
+			},
+			{
+				queryKey: ["get-referrals"],
+				queryFn: () => getReferrals({ timeLine: "TODAY", limit: 10, page: 1 }),
+			},
+			{
+				queryKey: ["get-withdrawals"],
+				queryFn: () => getWithdrawals({ limit: 10, page: 1 }),
+			},
+		],
 	});
 
-	const data: ChartData[] = React.useMemo(() => {
-		switch (selectedPeriod) {
-			case "THIS_YEAR":
-				return year_data;
-			case "THIS_MONTH":
-				return month_data;
-			case "THIS_WEEK":
-				return week_data;
-			case "TODAY":
-				return day_data;
-			default:
-				return year_data;
+	const [
+		{ data: analytics },
+		{ data: referralCharts, isLoading: isChartsLoading },
+		{ data: referrals },
+		{ data: withdrawals },
+	] = queries;
+
+	const copyReferralCode = () => {
+		if (!user?.referal_code) return;
+		navigator.clipboard.writeText(user.referal_code);
+		toast.success("Referral code copied!");
+	};
+
+	const toggleModal = (type: "share" | "withdraw", isOpen: boolean) => {
+		setModalState((prev) => ({ ...prev, [type]: isOpen }));
+	};
+
+	const getTotalCount = () => analytics?.data.total_count || 0;
+	const getParentCount = () => analytics?.data.parent || 0;
+	const getStudentCount = () => analytics?.data.student || 0;
+	const getMarketerCount = () => analytics?.data.marketer || 0;
+
+	const renderTabContent = () => {
+		if (tab === "referral") {
+			return (
+				<TabPanel selected={tab} value="referral">
+					{renderReferrals()}
+				</TabPanel>
+			);
 		}
-	}, [selectedPeriod]);
+		return (
+			<TabPanel selected={tab} value="withdrawal">
+				{renderWithdrawals()}
+			</TabPanel>
+		);
+	};
+
+	const renderReferrals = () => {
+		const data = referrals?.data.data || [];
+
+		if (!data.length) {
+			return (
+				<div className="grid min-h-[300px] w-full place-items-center">
+					<p className="text-sm text-primary-400">No referrals to display.</p>
+				</div>
+			);
+		}
+
+		return (
+			<>
+				{data.map((referral) => (
+					<ReferralItem key={referral.id} referral={referral} />
+				))}
+				<div className="flex items-center justify-center">
+					<Link href="/dashboard/referrals" className="link text-sm">
+						See all referrals
+					</Link>
+				</div>
+			</>
+		);
+	};
+
+	const renderWithdrawals = () => {
+		const data = withdrawals?.data.data || [];
+
+		if (!data.length) {
+			return (
+				<div className="grid min-h-[300px] w-full place-items-center">
+					<p className="text-sm text-primary-400">No withdrawals to display.</p>
+				</div>
+			);
+		}
+
+		return (
+			<>
+				{data.map((withdrawal) => (
+					<WithdrawalItem key={withdrawal.id} withdrawal={withdrawal} />
+				))}
+				<div className="flex items-center justify-center">
+					<Link href="/dashboard/withdrawals" className="link text-sm">
+						See all withdrawals
+					</Link>
+				</div>
+			</>
+		);
+	};
 
 	return (
 		<>
@@ -74,7 +153,9 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 			<main className="container h-[calc(100vh-96px)] py-10">
 				<div className="h-full w-full space-y-3 overflow-y-auto rounded-3xl bg-neutral-100 p-3">
 					<div className="w-full space-y-2 rounded-xl bg-gradient-to-r from-[#feede3]/40 to-[#6f42c1]/15 px-5 py-8">
-						<h1 className="text-2xl font-bold">{greeting()} Samson</h1>
+						<h1 className="text-2xl font-bold">
+							{greeting()}, {capitalize(user?.first_name)}
+						</h1>
 						<p className="text-sm text-neutral-400">
 							Monitor your ward&apos;s progress with Classore
 						</p>
@@ -85,18 +166,18 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 								<h5 className="text-lg font-semibold">Analytics Report</h5>
 							</div>
 							<div className="grid w-full grid-cols-2 gap-4">
-								<Card icon={RiTeamLine} label="Total Referrals" value={100} />
-								<Card icon={RiParentLine} label="Parents" value={100} />
-								<Card icon={RiUserLine} label="Students" value={100} />
-								<Card icon={RiUser4Line} label="Marketers" value={100} />
+								<Card icon={RiTeamLine} label="Total Referrals" value={getTotalCount()} />
+								<Card icon={RiParentLine} label="Parents" value={getParentCount()} />
+								<Card icon={RiUserLine} label="Students" value={getStudentCount()} />
+								<Card icon={RiUser4Line} label="Marketers" value={getMarketerCount()} />
 							</div>
 							<ChartBar
-								data={data}
+								data={referralCharts?.data || []}
+								isLoading={isChartsLoading}
 								selectedPeriod={selectedPeriod}
 								setSelectedPeriod={setSelectedPeriod}
 							/>
 						</div>
-
 						<div className="w-full space-y-8 rounded-2xl bg-white px-5 py-4">
 							<div className="grid w-full grid-cols-2 gap-x-3">
 								<div className="w-full rounded-lg bg-gradient-to-r from-[#341f5b]/40 to-[#6f42c1] p-4">
@@ -109,8 +190,8 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 											<p className="text-sm text-neutral-100">Your points equals NGN 33</p>
 										</div>
 										<WithdrawPoints
-											onClose={(withdraw) => setOpen({ ...open, withdraw })}
-											open={open.withdraw}
+											onClose={(withdraw) => toggleModal("withdraw", withdraw)}
+											open={modalState.withdraw}
 										/>
 									</div>
 								</div>
@@ -118,16 +199,16 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 									<div className="space-y-8 py-1">
 										<div>
 											<p className="text-sm text-neutral-400">Referral Code</p>
-											<h4 className="text-2xl">CODE HERE</h4>
+											<h4 className="text-2xl">{user?.referal_code}</h4>
 										</div>
 										<div className="flex items-center gap-x-2">
 											<Sharer
-												onClose={(share) => setOpen({ ...open, share })}
-												open={open.share}
-												url="CODE HERE"
+												onClose={(share) => toggleModal("share", share)}
+												open={modalState.share}
+												url={user?.referal_code || ""}
 											/>
 											<button
-												onClick={() => copy("CODE HERE")}
+												onClick={copyReferralCode}
 												className="flex h-10 w-[90px] items-center justify-center gap-x-2 rounded-3xl bg-white px-4 py-3 text-xs">
 												Copy <RiFileCopyLine className="size-4" />
 											</button>
@@ -135,44 +216,22 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 									</div>
 								</div>
 							</div>
-
 							<div className="w-full space-y-4">
 								<div className="flex h-10 w-full items-center gap-x-6 border-b">
 									{TAB_OPTIONS.map(({ icon: Icon, label, value }) => (
 										<button
 											key={value}
 											onClick={() => setTab(value)}
-											className={`relative flex h-full items-center gap-x-2 text-sm font-medium transition-all duration-500 before:absolute before:bottom-0 before:left-0 before:h-[1px] before:w-full before:bg-primary-400 ${tab === value ? "text-primary-400 before:block" : "text-neutral-400 before:hidden"}`}>
+											className={`relative flex h-full items-center gap-x-2 text-sm font-medium transition-all duration-500 before:absolute before:bottom-0 before:left-0 before:h-[1px] before:w-full before:bg-primary-400 ${
+												tab === value
+													? "text-primary-400 before:block"
+													: "text-neutral-400 before:hidden"
+											}`}>
 											<Icon className="size-5" /> {label}
 										</button>
 									))}
 								</div>
-								<div className="w-full">
-									<TabPanel selected={tab} value="referral">
-										<div className="w-full space-y-4">
-											{referrals.map((referral) => (
-												<ReferralItem key={referral.id} referral={referral} />
-											))}
-											<div className="flex items-center justify-center">
-												<Link href="/dashboard/referrals" className="link text-sm">
-													See all
-												</Link>
-											</div>
-										</div>
-									</TabPanel>
-									<TabPanel selected={tab} value="withdrawal">
-										<div className="w-full space-y-4">
-											{withdrawals.map((withdrawal) => (
-												<WithdrawalItem key={withdrawal.id} withdrawal={withdrawal} />
-											))}
-											<div className="flex items-center justify-center">
-												<Link href="/dashboard/withdrawals" className="link text-sm">
-													See all
-												</Link>
-											</div>
-										</div>
-									</TabPanel>
-								</div>
+								<div className="w-full space-y-4">{renderTabContent()}</div>
 							</div>
 						</div>
 					</div>
@@ -182,28 +241,4 @@ const Page = ({ referrals, withdrawals }: PageProps) => {
 	);
 };
 
-export default Page;
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
-	const referrals: ReferralProps[] = Array.from({ length: 6 }, () => ({
-		email: faker.internet.email(),
-		fullName: faker.person.fullName(),
-		id: faker.string.uuid(),
-		points: faker.number.int({ min: 5, max: 100 }),
-		status: faker.helpers.arrayElement(["active", "inactive"]),
-	}));
-
-	const withdrawals: WithdrawalProps[] = Array.from({ length: 6 }, () => ({
-		amount: faker.number.int({ min: 50, max: 500 }),
-		date: faker.date.between({ from: "2024-01-01", to: "2024-12-31" }).toISOString(),
-		id: faker.string.uuid(),
-		status: faker.helpers.arrayElement(["pending", "successful", "failed"]),
-	}));
-
-	return {
-		props: {
-			referrals,
-			withdrawals,
-		},
-	};
-};
+export default Dashboard;

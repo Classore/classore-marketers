@@ -2,6 +2,7 @@ import { RiArrowDownSLine, RiNotification4Line } from "@remixicon/react";
 import Image from "next/image";
 import React from "react";
 
+import { useUserStore } from "@/store/chunks/user";
 import type { NotificationProps } from "@/types";
 import { Notifications } from "./notifications";
 import { UserSettings } from "./user-settings";
@@ -11,6 +12,7 @@ import { getInitials } from "@/lib";
 const notifications: NotificationProps[] = [];
 
 export const Appbar = () => {
+	const { user } = useUserStore();
 	const [open, setOpen] = React.useState({
 		settings: false,
 		notifications: false,
@@ -37,11 +39,13 @@ export const Appbar = () => {
 							onClick={() => setOpen({ ...open, settings: true })}
 							className="flex items-center gap-x-2">
 							<div className="grid size-10 place-items-center rounded-full border bg-black text-white">
-								{getInitials("Samson Okunola")}
+								{getInitials(`${user?.first_name} ${user?.last_name}`)}
 							</div>
-							<div className="">
-								<h5 className="text-sm font-medium">Samson Okunola</h5>
-								<p className="text-xs text-neutral-400">okunolaosamson@gmail.com</p>
+							<div className="flex flex-col items-start">
+								<h5 className="text-sm font-medium capitalize">
+									{user?.first_name} {user?.last_name}
+								</h5>
+								<p className="text-xs text-neutral-400">{user?.email}</p>
 							</div>
 							<RiArrowDownSLine
 								className={`size-4 transition-all duration-500 ${open ? "rotate-180" : ""}`}

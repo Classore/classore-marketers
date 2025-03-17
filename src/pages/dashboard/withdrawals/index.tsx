@@ -31,13 +31,19 @@ const Page = () => {
 
 	useDebounce(search, 500);
 
-	const {} = useQuery({
+	const { data } = useQuery({
 		queryKey: ["get-withdrawals", page],
 		queryFn: () => getWithdrawals({ limit: 10, page }),
-		enabled: false,
 		select: (data) => ({
 			withdrawals: data.data.data,
-			meta: {},
+			meta: {
+				hasNext: data.data.meta.hasNextPage,
+				hasPrevious: data.data.meta.hasPreviousPage,
+				total: data.data.meta.itemCount,
+				page: data.data.meta.page,
+				pagesize: data.data.meta.pageCount,
+				limit: data.data.meta.take,
+			},
 		}),
 	});
 
@@ -91,8 +97,13 @@ const Page = () => {
 								</SelectTrigger>
 							</Select>
 						</div>
-						<DataTable columns={withdrawal_columns} data={[]} />
-						<Pagination current={page} onPageChange={setPage} pageSize={10} total={0} />
+						<DataTable columns={withdrawal_columns} data={data?.withdrawals || []} />
+						<Pagination
+							current={page}
+							onPageChange={setPage}
+							pageSize={10}
+							total={data?.meta.total ?? 0}
+						/>
 					</div>
 				</div>
 			</main>

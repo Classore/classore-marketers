@@ -2,20 +2,40 @@ import { useMutation } from "@tanstack/react-query";
 import { RiLoader2Line } from "@remixicon/react";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
+import { toast } from "sonner";
 import Link from "next/link";
 import * as Yup from "yup";
 import React from "react";
 
 import AuthLayout from "@/components/layouts/auth-layout";
+import { type SigninDto, SignIn } from "@/queries/auth";
+import { useUserStore } from "@/store/chunks/user";
 import { Button } from "@/components/ui/button";
 import { AuthGraphic } from "@/assets/icons";
 import { Input } from "@/components/ui/input";
 import { Seo } from "@/components/shared";
+import type { HttpError } from "@/types";
+import { capitalize } from "@/lib";
 
 const Page = () => {
+	const { signin } = useUserStore();
 	const router = useRouter();
 
-	const { isPending } = useMutation({});
+	const { isPending, mutateAsync } = useMutation({
+		mutationFn: (data: SigninDto) => SignIn(data),
+		onSuccess: (data) => {
+			toast.success("Login successful");
+			signin(data.data);
+			router.push("/dashboard");
+		},
+		onError: (error: HttpError) => {
+			const errorMessage = Array.isArray(error.response.data.message)
+				? error.response.data.message[0]
+				: error.response.data.message;
+			const message = errorMessage || "Something went wrong";
+			toast.error(capitalize(message));
+		},
+	});
 
 	const { errors, handleChange, handleSubmit, touched } = useFormik({
 		initialValues: {
@@ -35,8 +55,7 @@ const Page = () => {
 				),
 		}),
 		onSubmit: (values) => {
-			console.log(values);
-			router.push("/dashboard");
+			mutateAsync(values);
 		},
 	});
 
@@ -87,7 +106,7 @@ const Page = () => {
 						</div>
 						<div className="mt-2 flex flex-col gap-2">
 							<Button type="submit" disabled={isPending}>
-								{isPending ? <RiLoader2Line /> : "Sign In"}
+								{isPending ? <RiLoader2Line className="size-6 animate-spin" /> : "Sign In"}
 							</Button>
 						</div>
 					</form>

@@ -1,4 +1,5 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { RiLoaderLine } from "@remixicon/react";
 
 import { type Period, PERIOD_OPTIONS, formatDate } from "@/config";
 import type { ChartData } from "@/types";
@@ -11,13 +12,14 @@ import {
 
 interface Props {
 	data: ChartData[];
+	isLoading?: boolean;
 	selectedPeriod: Period;
 	setSelectedPeriod: (period: Period) => void;
 }
 
-export function ChartBar({ data, selectedPeriod, setSelectedPeriod }: Props) {
+export function ChartBar({ data, isLoading, selectedPeriod, setSelectedPeriod }: Props) {
 	const config = {
-		referral: {
+		count: {
 			label: "Referral",
 			color: "var(--neutral-200)",
 		},
@@ -38,21 +40,27 @@ export function ChartBar({ data, selectedPeriod, setSelectedPeriod }: Props) {
 					))}
 				</div>
 			</div>
-			<ChartContainer config={config}>
-				<BarChart accessibilityLayer data={data}>
-					<CartesianGrid vertical={false} />
-					<YAxis tickLine={false} axisLine={false} tickMargin={10} />
-					<XAxis
-						dataKey="date"
-						tickLine={false}
-						tickMargin={10}
-						axisLine={false}
-						tickFormatter={(value) => formatDate(new Date(value), selectedPeriod)}
-					/>
-					<ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-					<Bar dataKey="referral" fill="var(--color-referral)" radius={[8, 8, 0, 0]} />
-				</BarChart>
-			</ChartContainer>
+			{isLoading ? (
+				<div className="grid min-h-[300px] w-full place-items-center">
+					<RiLoaderLine className="animate-spin text-4xl text-primary-400" />
+				</div>
+			) : (
+				<ChartContainer config={config}>
+					<BarChart accessibilityLayer data={data}>
+						<CartesianGrid vertical={false} />
+						<YAxis tickLine={false} axisLine={false} tickMargin={10} />
+						<XAxis
+							dataKey="day_or_month"
+							tickLine={false}
+							tickMargin={10}
+							axisLine={false}
+							tickFormatter={(value) => formatDate(new Date(value), selectedPeriod)}
+						/>
+						<ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+						<Bar dataKey="count" fill="var(--color-count)" radius={[8, 8, 0, 0]} />
+					</BarChart>
+				</ChartContainer>
+			)}
 		</div>
 	);
 }

@@ -3,6 +3,7 @@ import React from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { UserBankDetails } from "./user-bank-details";
+import { useUserStore } from "@/store/chunks/user";
 import { UserSecurity } from "./user-security";
 import { UserProfile } from "./user-profile";
 import { TabPanel } from "./tab-panel";
@@ -20,6 +21,7 @@ const USER_TABS = [
 
 export const UserSettings = ({ setOpen }: Props) => {
 	const [tab, setTab] = React.useState("profile");
+	const { user } = useUserStore();
 
 	return (
 		<div className="absolute right-4 top-4 h-[calc(100vh-32px)] w-[550px] max-w-full space-y-4 rounded-lg border bg-white p-4 shadow-2xl">
@@ -36,12 +38,14 @@ export const UserSettings = ({ setOpen }: Props) => {
 						<Avatar className="size-[120px]">
 							<AvatarImage src="" />
 							<AvatarFallback className="bg-black text-4xl font-medium text-white">
-								{getInitials("Samson Okunola")}
+								{getInitials(`${user?.first_name} ${user?.last_name}`)}
 							</AvatarFallback>
 						</Avatar>
-						<div className="">
-							<h4 className="text-sm font-medium">Samson Okuonla</h4>
-							<p className="text-xs text-neutral-400">okunolaosamson@gmail.com</p>
+						<div className="pt-2">
+							<h4 className="font-medium capitalize">
+								{user?.first_name} {user?.last_name}
+							</h4>
+							<p className="text-xs text-neutral-400">{user?.email}</p>
 						</div>
 					</div>
 				</div>
@@ -58,7 +62,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 					</div>
 					<div className="h-full w-full">
 						<TabPanel selected={tab} value="profile">
-							<UserProfile />
+							<UserProfile user={user} />
 						</TabPanel>
 						<TabPanel selected={tab} value="security">
 							<UserSecurity />

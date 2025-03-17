@@ -27,3 +27,16 @@ export const formatTime = (timeInSeconds: number) => {
 	const seconds = timeInSeconds % 60;
 	return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
+
+export const capitalize = (str?: string) => {
+	if (!str) return "";
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const capitalizeWords = (str?: string) => {
+	if (!str) return "";
+	return str
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
+};

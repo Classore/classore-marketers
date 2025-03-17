@@ -8,10 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 export const greeting = () => {
 	const time = new Date().getHours();
 	if (time < 12) {
-		return "Good Morning";
+		return "Good morning";
 	} else if (time < 18) {
-		return "Good Afternoon";
+		return "Good afternoon";
 	} else {
-		return "Good Evening";
+		return "Good evening";
 	}
 };

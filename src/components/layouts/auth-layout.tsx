@@ -27,9 +27,12 @@ export default function AuthLayout({
 	return (
 		<main className="grid h-screen w-screen grid-cols-5">
 			<aside className="sticky top-0 col-span-2 hidden h-dvh flex-col gap-12 self-start bg-primary-100 p-10 pl-20 lg:flex">
-				<Link href="/" className="relative h-[30px] w-[135px]">
-					<Image src="/assets/images/classore.png" alt="classore" fill sizes="100%" />
-				</Link>
+				<div>
+					<Link href="/" className="relative h-[30px] w-[135px]">
+						<Image src="/assets/images/classore.png" alt="classore" fill sizes="100%" />
+					</Link>
+					<p className="">Marketers</p>
+				</div>
 				<h1 className="font-body text-4xl font-bold text-neutral-500">
 					Learning without limits, right where you are with{" "}
 					<span className="text-secondary-300">Classore</span>
