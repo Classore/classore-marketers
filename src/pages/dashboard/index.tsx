@@ -12,6 +12,7 @@ import {
 
 import { getReferralCharts, getReferrals } from "@/queries/referral";
 import { capitalize, formatCurrency, greeting } from "@/lib";
+import { withGuard } from "@/components/layouts/guard";
 import { getWithdrawals } from "@/queries/withdrawal";
 import { type Period, TAB_OPTIONS } from "@/config";
 import { getAnylytics } from "@/queries/analytics";
@@ -263,4 +264,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default withGuard(Dashboard);

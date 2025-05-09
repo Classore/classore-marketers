@@ -10,9 +10,10 @@ import {
 } from "@remixicon/react";
 
 import { Appbar, DataCard, DataTable, Pagination, Seo } from "@/components/shared";
+import { withGuard } from "@/components/layouts/guard";
+import { type Period, PERIOD_OPTIONS } from "@/config";
 import { getReferrals } from "@/queries/referral";
 import { referral_columns } from "@/config/table";
-import { type Period, PERIOD_OPTIONS } from "@/config";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks";
@@ -96,4 +97,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default withGuard(Page);

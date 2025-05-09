@@ -28,7 +28,7 @@ const useUserStore = createPersistMiddleware<UserStore>("classore-marketers", (s
 	...initialState,
 	signin: (user) => {
 		set({ user });
-		Cookies.set("classore-marketer", user.access_token, {
+		Cookies.set("CLASSORE_MARKETER_TOKEN", user.access_token, {
 			expires: 1000 * 60 * 60 * 24 * 7,
 			sameSite: "strict",
 		});
@@ -38,7 +38,7 @@ const useUserStore = createPersistMiddleware<UserStore>("classore-marketers", (s
 			if (!options?.soft) {
 				set({ user: null });
 			}
-			Cookies.remove("classore-marketer");
+			Cookies.remove("CLASSORE_MARKETER_TOKEN");
 		} catch (error) {
 			console.error(error);
 		} finally {

@@ -24,8 +24,8 @@ const Page = () => {
 	const { isPending, mutateAsync } = useMutation({
 		mutationFn: (data: SigninDto) => SignIn(data),
 		onSuccess: (data) => {
-			toast.success("Login successful");
 			signin(data.data);
+			toast.success("Login successful");
 			router.push("/dashboard");
 		},
 		onError: (error: HttpError) => {

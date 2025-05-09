@@ -26,7 +26,7 @@ export function middleware(req: NextRequest) {
 	// If user is not logged in and is on dashboard, redirect to signin
 	if (!hasToken && isOnDashboard) {
 		url.pathname = "/";
-		// return redirectResponse(url);
+		return redirectResponse(url);
 	}
 
 	// If user is logged in and is on signin or signup, redirect to dashboard

@@ -10,6 +10,7 @@ import {
 } from "@remixicon/react";
 
 import { Appbar, DataCard, DataTable, Pagination, Seo } from "@/components/shared";
+import { withGuard } from "@/components/layouts/guard";
 import { getWithdrawals } from "@/queries/withdrawal";
 import { withdrawal_columns } from "@/config/table";
 import { Button } from "@/components/ui/button";
@@ -111,4 +112,4 @@ const Page = () => {
 	);
 };
 
-export default Page;
+export default withGuard(Page);
