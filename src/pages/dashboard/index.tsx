@@ -175,12 +175,12 @@ const Dashboard = () => {
 							Monitor your ward&apos;s progress with Classore
 						</p>
 					</div>
-					<div className="grid max-h-[650px] w-full grid-cols-2 gap-x-4">
+					<div className="grid grid-cols-1 max-h-[650px] w-full lg:grid-cols-2 gap-x-4">
 						<div className="w-full space-y-3 rounded-2xl bg-white px-5 py-4">
 							<div className="flex w-full items-center justify-between">
 								<h5 className="text-lg font-semibold">Analytics Report</h5>
 							</div>
-							<div className="grid w-full grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 w-full lg:grid-cols-2 gap-4">
 								<Card icon={RiTeamLine} label="Total Referrals" value={getTotalCount()} />
 								<Card icon={RiParentLine} label="Parents" value={getParentCount()} />
 								<Card icon={RiUserLine} label="Students" value={getStudentCount()} />
@@ -194,7 +194,7 @@ const Dashboard = () => {
 							/>
 						</div>
 						<div className="w-full space-y-8 rounded-2xl bg-white px-5 py-4">
-							<div className="grid w-full grid-cols-2 gap-x-3">
+							<div className="grid grid-cols-1 w-full lg:grid-cols-2 gap-x-3 gap-y-3">
 								<div className="w-full rounded-lg bg-gradient-to-r from-[#341f5b]/40 to-[#6f42c1] p-4">
 									<div className="w-full space-y-2">
 										<div className="grid size-9 place-items-center rounded-full bg-white/25">

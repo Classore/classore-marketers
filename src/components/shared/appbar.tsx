@@ -20,21 +20,33 @@ export const Appbar = () => {
 
 	return (
 		<>
-			<header className="flex h-24 w-full items-center justify-center border-b">
-				<nav className="container flex items-center justify-between">
+			<header className="flex h-20 w-full items-center justify-center border-b">
+				<nav className="container flex items-center justify-between px-4">
+					{/* Logo */}
 					<div className="relative h-[30px] w-[135px]">
-						<Image src="/assets/images/classore.png" alt="classore" fill sizes="100%" />
+						<Image
+							src="/assets/images/classore.png"
+							alt="classore"
+							fill
+							sizes="100%"
+						/>
 					</div>
-					<div className="flex items-center gap-x-4">
+
+					{/* Desktop User Info */}
+					<div className="hidden md:flex items-center gap-x-4">
+						{/* Notification */}
 						<button
 							onClick={() => setOpen({ ...open, notifications: true })}
 							className="relative grid size-10 place-items-center rounded-full border">
 							{notifications.length > 0 && (
-								<div className="absolute right-0.5 top-0.5 size-1.5 rounded-full bg-red-500"></div>
+								<div className="absolute right-0.5 top-0.5 size-1.5 rounded-full bg-red-500" />
 							)}
 							<RiNotification4Line />
 						</button>
-						<div className="h-7 w-[1px] bg-neutral-300"></div>
+
+						<div className="h-7 w-[1px] bg-neutral-300" />
+
+						{/* User Profile */}
 						<button
 							onClick={() => setOpen({ ...open, settings: true })}
 							className="flex items-center gap-x-2">
@@ -52,11 +64,37 @@ export const Appbar = () => {
 							/>
 						</button>
 					</div>
+
+					{/* Mobile Icons Only */}
+					<div className="flex md:hidden items-center gap-x-3">
+						{/* Notification Icon */}
+						<button
+							onClick={() => setOpen({ ...open, notifications: true })}
+							className="relative grid size-10 place-items-center rounded-full border">
+							{notifications.length > 0 && (
+								<div className="absolute right-0.5 top-0.5 size-1.5 rounded-full bg-red-500" />
+							)}
+							<RiNotification4Line />
+						</button>
+
+						{/* Initials as trigger for Sidebar Settings */}
+						<button
+							onClick={() => setOpen({ ...open, settings: true })}
+							className="grid size-10 place-items-center rounded-full border bg-black text-white">
+							{getInitials(`${user?.first_name} ${user?.last_name}`)}
+						</button>
+					</div>
 				</nav>
 			</header>
+
+			{/* User Settings Sidebar (can use drawer effect) */}
 			<Backdrop onClose={(settings) => setOpen({ ...open, settings })} open={open.settings}>
-				<UserSettings setOpen={(settings) => setOpen({ ...open, settings })} />
+				<div className="w-full max-w-sm md:max-w-md bg-white h-full overflow-auto">
+					<UserSettings setOpen={(settings) => setOpen({ ...open, settings })} />
+				</div>
 			</Backdrop>
+
+			{/* Notification Modal */}
 			<Backdrop
 				onClose={(notifications) => setOpen({ ...open, notifications })}
 				open={open.notifications}>
