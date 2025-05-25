@@ -24,16 +24,11 @@ export const Appbar = () => {
 				<nav className="container flex items-center justify-between px-4">
 					{/* Logo */}
 					<div className="relative h-[30px] w-[135px]">
-						<Image
-							src="/assets/images/classore.png"
-							alt="classore"
-							fill
-							sizes="100%"
-						/>
+						<Image src="/assets/images/classore.png" alt="classore" fill sizes="100%" />
 					</div>
 
 					{/* Desktop User Info */}
-					<div className="hidden md:flex items-center gap-x-4">
+					<div className="hidden items-center gap-x-4 md:flex">
 						{/* Notification */}
 						<button
 							onClick={() => setOpen({ ...open, notifications: true })}
@@ -66,7 +61,7 @@ export const Appbar = () => {
 					</div>
 
 					{/* Mobile Icons Only */}
-					<div className="flex md:hidden items-center gap-x-3">
+					<div className="flex items-center gap-x-3 md:hidden">
 						{/* Notification Icon */}
 						<button
 							onClick={() => setOpen({ ...open, notifications: true })}
@@ -89,7 +84,7 @@ export const Appbar = () => {
 
 			{/* User Settings Sidebar (can use drawer effect) */}
 			<Backdrop onClose={(settings) => setOpen({ ...open, settings })} open={open.settings}>
-				<div className="w-full max-w-sm md:max-w-md bg-white h-full overflow-auto">
+				<div className="h-full w-full max-w-sm overflow-auto bg-white md:max-w-md">
 					<UserSettings setOpen={(settings) => setOpen({ ...open, settings })} />
 				</div>
 			</Backdrop>
