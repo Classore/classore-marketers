@@ -31,7 +31,7 @@ export const UserProfile = ({ user }: Props) => {
 		});
 
 	return (
-		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
+		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between overflow-y-scroll">
 			<div className="space-y-5 border-y py-6">
 				<div className="grid grid-cols-2 gap-x-4">
 					<div>
