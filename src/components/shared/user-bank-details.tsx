@@ -67,6 +67,14 @@ export const UserBankDetails = () => {
 			},
 		});
 
+	if (!banks) {
+		return (
+			<div className="flex h-full w-full items-center justify-center">
+				<RiLoaderLine className="size-6 animate-spin text-primary-500" />
+			</div>
+		);
+	}
+
 	return (
 		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
 			<div className="space-y-5 border-y py-6">

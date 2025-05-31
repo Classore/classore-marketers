@@ -9,9 +9,9 @@ export interface SigninDto {
 }
 
 export interface CreatePasswordDto {
-	confirmPassword: string;
-	password: string;
-	token: string;
+	confirm_password: string;
+	new_password: string;
+	otp: string;
 }
 
 const SignIn = async (data: SigninDto) => {
@@ -20,10 +20,16 @@ const SignIn = async (data: SigninDto) => {
 		.then((res) => res.data);
 };
 
-const RequestPasswordReset = async (data: CreatePasswordDto) => {
+const RequestPasswordReset = async (email: string) => {
 	return axios
-		.post<HttpResponse<string>>(endpoints().auth.request_password_reset, data)
+		.post<HttpResponse<string>>(endpoints().auth.request_password_reset, { email })
 		.then((res) => res.data);
 };
 
-export { RequestPasswordReset, SignIn };
+const PasswordReset = async (data: CreatePasswordDto) => {
+	return axios
+		.post<HttpResponse<string>>(endpoints().auth.password_reset, data)
+		.then((res) => res.data);
+};
+
+export { PasswordReset, RequestPasswordReset, SignIn };

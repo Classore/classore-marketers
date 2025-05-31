@@ -8,19 +8,27 @@ import React from "react";
 
 import AuthLayout from "@/components/layouts/auth-layout";
 import { ForgotPasswordGraphic } from "@/assets/icons";
+import { RequestPasswordReset } from "@/queries/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Seo } from "@/components/shared";
+import type { HttpError } from "@/types";
 
 const Page = () => {
 	const router = useRouter();
 
-	const { isPending } = useMutation({
+	const { isPending, mutateAsync } = useMutation({
+		mutationFn: RequestPasswordReset,
 		onSuccess: () => {
 			toast.success("An email sent has been sent to you");
+			router.push("/reset-password");
 		},
-		onError: (error) => {
-			console.error(error);
+		onError: (error: HttpError) => {
+			const errorMessage = Array.isArray(error?.response.data.message)
+				? error?.response.data.message[0]
+				: error?.response.data.message;
+			const message = errorMessage ?? "Something went wrong, please try again later";
+			toast.error(message);
 		},
 	});
 
@@ -33,7 +41,7 @@ const Page = () => {
 			email: Yup.string().email("Invalid email address").required("Required"),
 		}),
 		onSubmit: (values) => {
-			console.log(values);
+			mutateAsync(values.email);
 		},
 	});
 
@@ -61,7 +69,7 @@ const Page = () => {
 						/>
 						<div className="mt-2 flex flex-col gap-2">
 							<Button type="submit" disabled={isPending}>
-								{isPending ? <RiLoader2Line /> : "Next"}
+								{isPending ? <RiLoader2Line className="animate-spin" /> : "Next"}
 							</Button>
 						</div>
 					</form>
