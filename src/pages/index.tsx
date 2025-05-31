@@ -49,10 +49,7 @@ const Page = () => {
 				.email("Please enter a valid email address"),
 			password: Yup.string()
 				.required("Password is required")
-				.matches(
-					/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-					"Password must contain at least 8 characters, one uppercase, one lowercase and one special character"
-				),
+				.min(8, "Password must be at least 8 characters"),
 		}),
 		onSubmit: (values) => {
 			mutateAsync(values);
