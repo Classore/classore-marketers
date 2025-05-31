@@ -1,12 +1,15 @@
 import React from "react";
 
+import { cn } from "@/lib";
+
 interface Props {
 	onChange: (value: string) => void;
 	value: string;
+	className?: string;
 	length?: number;
 }
 
-export const OtpInput = ({ onChange, value, length = 6 }: Props) => {
+export const OtpInput = ({ onChange, value, className, length = 4 }: Props) => {
 	const values = React.useMemo(() => {
 		return Array.from({ length: length }, (_, i) => value[i] || "");
 	}, [length, value]);
@@ -26,9 +29,11 @@ export const OtpInput = ({ onChange, value, length = 6 }: Props) => {
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
-		const newValue = value.slice(0, index) + e.target.value + value.slice(index + 1);
+		const digit = e.target.value.replace(/[^\d]/g, "");
+		if (digit === "" && e.target.value !== "") return;
+		const newValue = value.slice(0, index) + digit + value.slice(index + 1);
 		onChange(newValue.slice(0, length));
-		if (e.target.value !== "" && index < length - 1) {
+		if (digit !== "" && index < length - 1) {
 			focusToNextInput(e.target);
 		}
 	};
@@ -61,13 +66,13 @@ export const OtpInput = ({ onChange, value, length = 6 }: Props) => {
 	};
 
 	return (
-		<div className="flex w-full items-center justify-center gap-x-2">
+		<div className={cn("flex w-full items-center justify-center gap-x-2", className)}>
 			{values.map((value, index) => (
 				<MemoizedInput
 					key={index}
 					type="text"
 					value={value}
-					className="aspect-square w-[50px] rounded-md border-none bg-neutral-200 text-center text-xs text-primary-400 outline-none ring-0 focus:border-primary-400 focus:outline-none focus:ring-0"
+					className="aspect-square w-[50px] rounded-md border border-neutral-300 bg-transparent text-center text-xs text-primary-400 outline-none ring-0 focus:border-primary-400 focus:outline-none focus:ring-0"
 					onChange={(e) => handleChange(e, index)}
 					onFocus={handleFocus}
 					onKeyDown={handleKeyDown}
@@ -75,6 +80,7 @@ export const OtpInput = ({ onChange, value, length = 6 }: Props) => {
 					autoComplete="one-time-code"
 					pattern="\d{1}"
 					maxLength={length}
+					onWheel={(e) => e.currentTarget.blur()}
 				/>
 			))}
 		</div>

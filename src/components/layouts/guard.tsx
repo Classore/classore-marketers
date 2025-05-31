@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { toast } from "sonner";
 import React from "react";
 
 import { useUserStore } from "@/store/chunks/user";
@@ -13,8 +12,7 @@ export const withGuard = <P extends object>(WrappedComponent: React.ComponentTyp
 
 		React.useEffect(() => {
 			if (!user || !token) {
-				toast.error("User is not authenticated");
-				router.push("/signin");
+				router.push("/");
 			}
 		}, [router, token, user]);
 

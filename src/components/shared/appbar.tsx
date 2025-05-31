@@ -8,6 +8,7 @@ import { Notifications } from "./notifications";
 import { UserSettings } from "./user-settings";
 import { Backdrop } from "./backdrop";
 import { getInitials } from "@/lib";
+import { Logout } from "./logout";
 
 const notifications: NotificationProps[] = [];
 
@@ -58,6 +59,7 @@ export const Appbar = () => {
 								className={`size-4 transition-all duration-500 ${open ? "rotate-180" : ""}`}
 							/>
 						</button>
+						<Logout />
 					</div>
 
 					{/* Mobile Icons Only */}

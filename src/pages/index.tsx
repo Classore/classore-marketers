@@ -50,8 +50,8 @@ const Page = () => {
 			password: Yup.string()
 				.required("Password is required")
 				.matches(
-					/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-					"Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character"
+					/(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+					"Password must contain at least 8 characters, one uppercase, one lowercase and one special character"
 				),
 		}),
 		onSubmit: (values) => {

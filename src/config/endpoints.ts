@@ -4,6 +4,7 @@ export const endpoints = (id?: string) => {
 			read_all: "/admin/marketer/homepage-analytics",
 		},
 		auth: {
+			password_reset: "/admin/staff/password/reset",
 			request_password_reset: "/admin/staff/password/reset-request",
 			signin: "/admin/staff/login",
 		},
