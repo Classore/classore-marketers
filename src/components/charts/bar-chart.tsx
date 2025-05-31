@@ -28,13 +28,13 @@ export function ChartBar({ data, isLoading, selectedPeriod, setSelectedPeriod }:
 	return (
 		<div className="w-full space-y-10 rounded-lg border bg-white p-4">
 			<div className="flex h-9 w-full items-center justify-between">
-				<p className="text-sm font-medium">Referral Report</p>
+				<p className="text-xs font-medium lg:text-sm">Referral Report</p>
 				<div className="flex items-center rounded-lg bg-neutral-200">
 					{PERIOD_OPTIONS.map(({ label, value }, index) => (
 						<button
 							key={index}
 							onClick={() => setSelectedPeriod(value)}
-							className={`rounded-lg border px-3 py-2 text-sm transition-all duration-500 ${value === selectedPeriod ? "border-neutral-400 bg-white" : "border-transparent text-neutral-400"}`}>
+							className={`rounded-lg border px-3 py-2 text-xs transition-all duration-500 lg:text-sm ${value === selectedPeriod ? "border-neutral-400 bg-white" : "border-transparent text-neutral-400"}`}>
 							{label}
 						</button>
 					))}

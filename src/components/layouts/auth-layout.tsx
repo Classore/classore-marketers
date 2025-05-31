@@ -43,7 +43,7 @@ export default function AuthLayout({
 					className="absolute -right-11 bottom-0 max-w-md"
 				/>
 			</aside>
-			<div className="col-span-3 mx-auto min-h-dvh bg-white px-6 py-10 lg:mx-0 lg:px-32 lg:py-6">
+			<div className="col-span-5 mx-auto min-h-dvh bg-white px-6 py-10 lg:col-span-3 lg:mx-0 lg:px-32 lg:py-6">
 				{children}
 			</div>
 		</main>

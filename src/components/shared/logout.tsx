@@ -21,10 +21,10 @@ export const Logout = () => {
 				<button
 					onClick={() => setOpen(true)}
 					className="relative grid size-10 place-items-center rounded-full border text-red-500">
-					<RiLogoutCircleLine className="rotate-180" />
+					<RiLogoutCircleLine className="size-4 rotate-180 lg:size-6" />
 				</button>
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent className="max-w-[90%] rounded-md lg:w-[500px]">
 				<DialogTitle>Logout</DialogTitle>
 				<DialogDescription>
 					You are about to logout from your current session. Do you want to continue?

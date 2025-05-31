@@ -8,6 +8,7 @@ import React from "react";
 import { type BankDetailsDto, updateBankDetails } from "@/queries/user";
 import { useUserStore } from "@/store/chunks/user";
 import { getBanks } from "@/queries/withdrawal";
+import { useDeviceWidth } from "@/hooks";
 import { Button } from "../ui/button";
 import { queryClient } from "@/lib";
 import { Input } from "../ui/input";
@@ -21,6 +22,7 @@ import {
 
 export const UserBankDetails = () => {
 	const { user, bankDetails } = useUserStore();
+	const { isMobile } = useDeviceWidth();
 
 	const [{ data: banks }] = useQueries({
 		queries: [
@@ -127,19 +129,23 @@ export const UserBankDetails = () => {
 				</div>
 			</div>
 			<div className="flex w-full items-center justify-between">
-				<Button type="button" size="sm" variant="destructive-outline" disabled={isPending}>
+				<Button
+					type="button"
+					size={isMobile ? "xs" : "sm"}
+					variant="destructive-outline"
+					disabled={isPending}>
 					Delete Account
 				</Button>
 				<div className="flex items-center gap-x-4">
 					<Button
 						type="button"
 						onClick={() => resetForm()}
-						size="sm"
+						size={isMobile ? "xs" : "sm"}
 						variant="outline"
 						disabled={isPending}>
 						Reset Changes
 					</Button>
-					<Button type="submit" size="sm" disabled={isPending}>
+					<Button type="submit" size={isMobile ? "xs" : "sm"} disabled={isPending}>
 						{isPending ? <RiLoaderLine className="animate-spin" /> : "Save Changes"}
 					</Button>
 				</div>

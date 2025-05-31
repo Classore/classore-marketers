@@ -63,7 +63,7 @@ export const Appbar = () => {
 					</div>
 
 					{/* Mobile Icons Only */}
-					<div className="flex items-center gap-x-3 md:hidden">
+					<div className="flex items-center gap-x-2 md:hidden">
 						{/* Notification Icon */}
 						<button
 							onClick={() => setOpen({ ...open, notifications: true })}
@@ -71,22 +71,23 @@ export const Appbar = () => {
 							{notifications.length > 0 && (
 								<div className="absolute right-0.5 top-0.5 size-1.5 rounded-full bg-red-500" />
 							)}
-							<RiNotification4Line />
+							<RiNotification4Line className="size-4" />
 						</button>
 
 						{/* Initials as trigger for Sidebar Settings */}
 						<button
 							onClick={() => setOpen({ ...open, settings: true })}
-							className="grid size-10 place-items-center rounded-full border bg-black text-white">
+							className="grid size-8 place-items-center rounded-full border bg-black text-xs text-white">
 							{getInitials(`${user?.first_name} ${user?.last_name}`)}
 						</button>
+						<Logout />
 					</div>
 				</nav>
 			</header>
 
 			{/* User Settings Sidebar (can use drawer effect) */}
 			<Backdrop onClose={(settings) => setOpen({ ...open, settings })} open={open.settings}>
-				<div className="h-full w-full max-w-sm overflow-auto bg-white md:max-w-md">
+				<div className="h-full w-full bg-black/50">
 					<UserSettings setOpen={(settings) => setOpen({ ...open, settings })} />
 				</div>
 			</Backdrop>

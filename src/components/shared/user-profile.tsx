@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import React from "react";
 
 import type { UserProps } from "@/types";
+import { useDeviceWidth } from "@/hooks";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
@@ -15,6 +16,8 @@ interface Props {
 }
 
 export const UserProfile = ({ user }: Props) => {
+	const { isMobile } = useDeviceWidth();
+
 	const { errors, handleChange, handleSubmit, resetForm, setFieldValue, touched, values } =
 		useFormik({
 			initialValues: {
@@ -32,7 +35,7 @@ export const UserProfile = ({ user }: Props) => {
 
 	return (
 		<form onSubmit={handleSubmit} className="flex h-full w-full flex-col justify-between">
-			<div className="space-y-5 border-y py-6">
+			<div className="space-y-5 overflow-y-auto border-y py-6">
 				<div className="grid grid-cols-2 gap-x-4">
 					<div>
 						<label className="text-xs font-medium" htmlFor="first_name">
@@ -105,15 +108,19 @@ export const UserProfile = ({ user }: Props) => {
 					)}
 				</div>
 			</div>
-			<div className="flex w-full items-center justify-between">
-				<Button type="button" size="sm" variant="destructive-outline">
+			<div className={"flex w-full items-center justify-between"}>
+				<Button type="button" size={isMobile ? "xs" : "sm"} variant="destructive-outline">
 					Delete Account
 				</Button>
-				<div className="flex items-center gap-x-4">
-					<Button type="button" onClick={() => resetForm()} size="sm" variant="outline">
+				<div className="flex items-center gap-x-1 lg:gap-x-4">
+					<Button
+						type="button"
+						onClick={() => resetForm()}
+						size={isMobile ? "xs" : "sm"}
+						variant="outline">
 						Reset Changes
 					</Button>
-					<Button type="submit" size="sm">
+					<Button type="submit" size={isMobile ? "xs" : "sm"}>
 						Save Changes
 					</Button>
 				</div>
