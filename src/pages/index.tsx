@@ -60,7 +60,7 @@ const Page = () => {
 		<>
 			<Seo title="Welcome back" />
 			<AuthLayout screen="signin">
-				<div className="flex max-w-96 flex-col justify-center gap-6 pt-20">
+				<div className="flex w-full flex-col justify-center gap-6 pt-20 lg:max-w-96">
 					<header className="flex flex-col gap-4">
 						<AuthGraphic />
 						<h2 className="font-body text-2xl font-bold text-neutral-900">Welcome Back</h2>

@@ -173,11 +173,11 @@ const Dashboard = () => {
 							{greeting()}, {capitalize(user?.first_name)}
 						</h1>
 						<p className="text-sm text-neutral-400">
-							Monitor your ward&apos;s progress with Classore
+							Monitor all your earnings from one place.
 						</p>
 					</div>
 					<div className="grid max-h-[650px] w-full grid-cols-1 gap-x-4 lg:grid-cols-2">
-						<div className="w-full space-y-3 rounded-2xl bg-white px-5 py-4">
+						<div className="w-full space-y-3 rounded-2xl bg-white px-0 py-0 lg:px-5 lg:py-4">
 							<div className="flex w-full items-center justify-between">
 								<h5 className="text-lg font-semibold">Analytics Report</h5>
 							</div>

@@ -24,7 +24,7 @@ export const UserSettings = ({ setOpen }: Props) => {
 	const { user } = useUserStore();
 
 	return (
-		<div className="absolute right-4 top-4 h-[calc(100vh-32px)] w-[550px] max-w-full space-y-4 rounded-lg border bg-white px-7 py-4 shadow-2xl">
+		<div className="absolute right-0 top-0 h-full w-full max-w-full space-y-4 rounded-lg border bg-white px-2 py-4 shadow-2xl lg:right-4 lg:top-4 lg:h-[calc(100vh-32px)] lg:max-w-[550px] lg:px-7">
 			<div className="flex w-full items-center justify-between">
 				<p className="text-lg font-semibold">Account Settings</p>
 				<button onClick={() => setOpen(false)}>
@@ -56,11 +56,11 @@ export const UserSettings = ({ setOpen }: Props) => {
 								key={value}
 								onClick={() => setTab(value)}
 								className={`flex items-center gap-x-2 px-2 py-1.5 text-sm font-medium transition-colors duration-500 ${value === tab ? "text-primary-400" : "text-neutral-400"}`}>
-								<Icon className="size-5" /> {label}
+								<Icon className="hidden size-5 lg:block" /> {label}
 							</button>
 						))}
 					</div>
-					<div className="h-full w-full">
+					<div className="h-full w-full overflow-y-auto">
 						<TabPanel selected={tab} value="profile">
 							<UserProfile user={user} />
 						</TabPanel>

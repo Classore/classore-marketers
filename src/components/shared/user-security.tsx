@@ -1,10 +1,13 @@
 import { useFormik } from "formik";
 import React from "react";
 
+import { useDeviceWidth } from "@/hooks";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
 export const UserSecurity = () => {
+	const { isMobile } = useDeviceWidth();
+
 	const { errors, handleChange, handleSubmit, resetForm, touched } = useFormik({
 		initialValues: {
 			confirmPassword: "",
@@ -56,14 +59,18 @@ export const UserSecurity = () => {
 				</div>
 			</div>
 			<div className="flex w-full items-center justify-between">
-				<Button type="button" size="sm" variant="destructive-outline">
+				<Button type="button" size={isMobile ? "xs" : "sm"} variant="destructive-outline">
 					Delete Account
 				</Button>
 				<div className="flex items-center gap-x-4">
-					<Button type="button" onClick={() => resetForm()} size="sm" variant="outline">
+					<Button
+						type="button"
+						onClick={() => resetForm()}
+						size={isMobile ? "xs" : "sm"}
+						variant="outline">
 						Reset Changes
 					</Button>
-					<Button type="submit" size="sm">
+					<Button type="submit" size={isMobile ? "xs" : "sm"}>
 						Save Changes
 					</Button>
 				</div>
