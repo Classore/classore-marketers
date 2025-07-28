@@ -28,7 +28,7 @@ const RequestPasswordReset = async (email: string) => {
 
 const PasswordReset = async (data: CreatePasswordDto) => {
 	return axios
-		.post<HttpResponse<string>>(endpoints().auth.password_reset, data)
+		.put<HttpResponse<string>>(endpoints().auth.password_reset, data)
 		.then((res) => res.data);
 };
 
