@@ -8,15 +8,17 @@ import React from "react";
 
 import AuthLayout from "@/components/layouts/auth-layout";
 import { Button } from "@/components/ui/button";
+import { PasswordReset, type CreatePasswordDto } from "@/queries/auth";
 import { Input } from "@/components/ui/input";
 import { LockGraphic } from "@/assets/icons";
 import { Seo } from "@/components/shared";
 
 const Page = () => {
 	const router = useRouter();
-	const token = router.query.token as string;
+	const otp = router.query.token as string;
 
-	const { isPending } = useMutation({
+	const { isPending, mutate } = useMutation({
+		mutationFn: PasswordReset,
 		onSuccess: () => {
 			toast.success("Your password has been changed successfully");
 			router.push("/");
@@ -26,17 +28,18 @@ const Page = () => {
 		},
 	});
 
-	const { errors, handleChange, handleSubmit, touched } = useFormik({
+	const { errors, handleChange, handleSubmit, touched } = useFormik<CreatePasswordDto>({
 		initialValues: {
-			confirmPassword: "",
-			password: "",
+			confirm_password: "",
+			new_password: "",
+			otp,
 		},
 		validateOnChange: true,
 		validationSchema: Yup.object({
-			confirmPassword: Yup.string()
+			confirm_password: Yup.string()
 				.required("Please confirm your new password")
-				.oneOf([Yup.ref("password")], "Passwords must match"),
-			password: Yup.string()
+				.oneOf([Yup.ref("new_password")], "Passwords must match"),
+			new_password: Yup.string()
 				.required("Password is required")
 				.matches(
 					/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
@@ -46,9 +49,9 @@ const Page = () => {
 		onSubmit: (values) => {
 			const payload = {
 				...values,
-				token,
+				otp,
 			};
-			console.log(payload);
+			mutate(payload);
 		},
 	});
 
@@ -67,24 +70,24 @@ const Page = () => {
 							label="New Password"
 							placeholder="***********"
 							className="col-span-full"
-							name="password"
+							name="new_password"
 							onChange={handleChange}
-							error={touched.password && errors.password ? errors.password : ""}
+							error={touched.new_password && errors.new_password ? errors.new_password : ""}
 						/>
 						<Input
 							type="password"
 							label="Confirm New Password"
 							placeholder="***********"
 							className="col-span-full"
-							name="confirmPassword"
+							name="confirm_password"
 							onChange={handleChange}
 							error={
-								touched.confirmPassword && errors.confirmPassword ? errors.confirmPassword : ""
+								touched.confirm_password && errors.confirm_password ? errors.confirm_password : ""
 							}
 						/>
 						<div className="mt-2 flex flex-col gap-2">
 							<Button type="submit" disabled={isPending}>
-								{isPending ? <RiLoader2Line /> : "Next"}
+								{isPending ? <RiLoader2Line className="animate-spin" /> : "Next"}
 							</Button>
 						</div>
 					</form>
